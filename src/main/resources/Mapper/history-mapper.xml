@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+
+<mapper namespace="History">
+
+    <insert id="insertHistory" parameterType="com.tnt.project.dto.HistoryDTO">
+        INSERT INTO HISTORY (
+            SEQ,
+            MEMBER_ID,
+            RESULT_URL,
+            NAME,
+            UPPER_IMAGE_URL,
+            UPPER_NAME,
+            LOWER_IMAGE_URL,
+            LOWER_NAME,
+            SAVE_DATE
+        ) VALUES (
+            HISTORY_SEQ.NEXTVAL,
+            #{memberId},
+            #{resultUrl},
+            #{name},
+            #{upperImageUrl},
+            #{upperName},
+            #{lowerImageUrl},
+            #{lowerName},
+            SYSDATE
+        )
+    </insert>
+
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Model">
+
+    <insert id="insertModel" parameterType="com.tnt.project.dto.ModelDTO">
+        INSERT INTO MODEL (
+            SEQ,
+            MEMBER_ID,
+            MODEL_URL,
+            MODEL_NAME,
+            CREATED_AT
+        ) VALUES (
+            MODEL_SEQ.NEXTVAL,
+            #{memberId},
+            #{modelUrl},
+            #{modelName},
+            SYSDATE
+        )
+    </insert>
+
+</mapper>

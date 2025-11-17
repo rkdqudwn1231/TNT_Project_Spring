@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Closet">
+
+    <insert id="insertCloset" parameterType="com.tnt.project.dto.ClosetDTO">
+        INSERT INTO CLOSET (
+            SEQ,
+            MEMBER_ID,
+            CLOTH_TYPE,
+            UPPER_IMAGE_URL,
+            UPPER_NAME,
+            LOWER_IMAGE_URL,
+            LOWER_NAME,
+            CATEGORY,
+            CREATED_AT
+        ) VALUES (
+            CLOSET_SEQ.NEXTVAL,
+            #{memberId},
+            #{clothType},
+            #{upperImageUrl},
+            #{upperName},
+            #{lowerImageUrl},
+            #{lowerName},
+            #{category},
+            SYSDATE
+        )
+    </insert>
+
+</mapper>

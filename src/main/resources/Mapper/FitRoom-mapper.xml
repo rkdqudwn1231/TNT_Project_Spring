@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="FitRoom">
+
+    <insert id="insertFitRoom" parameterType="com.tnt.project.dto.FitRoomDTO">
+        INSERT INTO FITROOM (
+            SEQ, MEMBER_ID, MODEL_IMAGE_URL, MODEL_NAME,
+            CLOTH_TYPE, UPPER_IMAGE_URL, UPPER_NAME,
+            LOWER_IMAGE_URL, LOWER_NAME, CATEGORY, RESULT_URL
+        ) VALUES (
+            FITROOM_SEQ.NEXTVAL,
+            #{memberId},
+            #{modelImageUrl},
+            #{modelName},
+            #{clothType},
+            #{upperImageUrl},
+            #{upperName},
+            #{lowerImageUrl},
+            #{lowerName},
+            #{category},
+            #{resultUrl}
+        )
+    </insert>
+
+    <select id="selectBySeq" resultType="FitRoomDTO">
+        SELECT * FROM FITROOM WHERE SEQ = #{seq}
+    </select>
+
+    <select id="selectByMember" resultType="FitRoomDTO">
+        SELECT * FROM FITROOM 
+        WHERE MEMBER_ID = #{memberId}
+        ORDER BY START_DATE DESC
+    </select>
+
+	
+</mapper>
