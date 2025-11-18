@@ -1,9 +1,12 @@
 package com.tnt.project.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.tnt.project.dto.ClosetDTO;
 import com.tnt.project.dto.ModelDTO;
 
 @Repository
@@ -15,6 +18,11 @@ public class ModelDAO {
 	    public int insertModel(ModelDTO modelDTO) {
 	    	return mybatis.insert("Model.insertModel", modelDTO);
 	    }
+
+		public List<ModelDTO> getModelList() {
+			
+			return mybatis.selectList("Model.getModelList");
+		}
 	
 	
 

@@ -8,25 +8,48 @@ public class ModelDTO {
     private String modelUrl;
     private String modelName;
     private String taskId;
+    private Date saveDate;
     
     public ModelDTO() {}
     
     
-    public ModelDTO(int seq, String memberId, String modelUrl, String modelName, Date createdAt) {
+    public ModelDTO(int seq, String memberId, String modelUrl, String modelName, Date saveDate) {
 		super();
 		this.seq = seq;
 		this.memberId = memberId;
 		this.modelUrl = modelUrl;
 		this.modelName = modelName;
-		this.createdAt = createdAt;
+		this.saveDate = saveDate;
 	}
-	private Date createdAt;
+	
     
     
     
     
     
     
+	public Date getSaveDate() {
+		return saveDate;
+	}
+
+
+	public void setSaveDate(Date saveDate) {
+		this.saveDate = saveDate;
+	}
+
+
+	public String getTaskId() {
+		return taskId;
+	}
+
+
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
+	}
+
+
+	
+
 	public int getSeq() {
 		return seq;
 	}
@@ -51,10 +74,5 @@ public class ModelDTO {
 	public void setModelName(String modelName) {
 		this.modelName = modelName;
 	}
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+	
 }

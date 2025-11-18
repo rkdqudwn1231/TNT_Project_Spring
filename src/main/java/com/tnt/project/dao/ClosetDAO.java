@@ -1,5 +1,7 @@
 package com.tnt.project.dao;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,4 +17,9 @@ public class ClosetDAO {
     public int insertCloset(ClosetDTO closetDTO) {
     	return mybatis.insert("Closet.insertCloset", closetDTO);
     }
+
+	public List<ClosetDTO> getClosetList() {
+	
+		return mybatis.selectList("Closet.getClosetList");
+	}
 }

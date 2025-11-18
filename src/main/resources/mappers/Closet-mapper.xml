@@ -29,4 +29,10 @@
         )
     </insert>
 
+   <select id="getClosetList" resultType="com.tnt.project.dto.ClosetDTO">
+    
+    select * from closet 
+    
+    </select>
+
 </mapper>

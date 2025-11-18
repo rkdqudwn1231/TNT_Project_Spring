@@ -12,14 +12,15 @@ public class ClosetDTO {
 	private String lowerImageUrl;
 	private String lowerName;
 	private String category;
-	
+	private Date saveDate;
+
 	
 	
 	public ClosetDTO() {}
 	
 	
 	public ClosetDTO(Long seq, String memberId, String clothType, String upperImageUrl, String upperName,
-			String lowerImageUrl, String lowerName, String category, Date createdAt) {
+			String lowerImageUrl, String lowerName, String category, Date saveDate) {
 		super();
 		this.seq = seq;
 		this.memberId = memberId;
@@ -29,14 +30,23 @@ public class ClosetDTO {
 		this.lowerImageUrl = lowerImageUrl;
 		this.lowerName = lowerName;
 		this.category = category;
-		this.createdAt = createdAt;
+		this.saveDate = saveDate;
 	}
-	private Date createdAt;
 	
 	
+
 	
 	
-	
+	public Date getSaveDate() {
+		return saveDate;
+	}
+
+
+	public void setSaveDate(Date saveDate) {
+		this.saveDate = saveDate;
+	}
+
+
 	public Long getSeq() {
 		return seq;
 	}
@@ -85,12 +95,7 @@ public class ClosetDTO {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+
 
 
 

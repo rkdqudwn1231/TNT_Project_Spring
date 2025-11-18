@@ -21,4 +21,12 @@
         )
     </insert>
 
+
+ <select id="getModelList" resultType="com.tnt.project.dto.ModelDTO">
+    
+    select * from model 
+    
+    </select>
+    
+    
 </mapper>
