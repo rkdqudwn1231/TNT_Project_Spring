@@ -12,8 +12,8 @@ public class FitRoomDAO {
 	@Autowired
 	private SqlSessionTemplate mybatis;
 	
-	   public void insertFitRoom(FitRoomDTO fitRoomDTO) {
-	        mybatis.insert("FitRoom.insertFitRoom", fitRoomDTO);
+	   public int insertFitRoom(FitRoomDTO fitRoomDTO) {
+		   return mybatis.insert("FitRoom.insertFitRoom", fitRoomDTO);
 	    }
 	
 }

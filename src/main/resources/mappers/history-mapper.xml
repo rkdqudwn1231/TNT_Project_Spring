@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+
+<mapper namespace="History">
+
+    <insert id="insertHistory" parameterType="com.tnt.project.dto.HistoryDTO">
+        INSERT INTO HISTORY (
+            SEQ,
+            MEMBER_ID,
+            RESULTURL,
+            NAME,
+            UPPERIMAGEURL,
+            UPPERNAME,
+            LOWERIMAGEURL,
+            LOWERNAME,
+            SAVEDATE
+        ) VALUES (
+            HISTORY_SEQ.NEXTVAL,
+            #{memberId, jdbcType=VARCHAR},
+            #{resultUrl, jdbcType=CLOB},
+            #{name, jdbcType=VARCHAR},
+            #{upperImageUrl, jdbcType=CLOB},
+            #{upperName, jdbcType=VARCHAR},
+            #{lowerImageUrl, jdbcType=CLOB},
+            #{lowerName, jdbcType=VARCHAR},
+            SYSDATE
+        )
+    </insert>
+    
+    <select id="getHistoryList" resultType="com.tnt.project.dto.HistoryDTO">
+    
+    select * from history 
+    
+    </select>
+
+</mapper>

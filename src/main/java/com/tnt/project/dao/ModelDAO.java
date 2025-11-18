@@ -12,8 +12,8 @@ public class ModelDAO {
 	   @Autowired
 	    private SqlSessionTemplate mybatis;
 
-	    public void insertModel(ModelDTO modelDTO) {
-	        mybatis.insert("Model.insertModel", modelDTO);
+	    public int insertModel(ModelDTO modelDTO) {
+	    	return mybatis.insert("Model.insertModel", modelDTO);
 	    }
 	
 	
