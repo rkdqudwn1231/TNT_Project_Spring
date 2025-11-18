@@ -7,33 +7,33 @@
 
     <insert id="insertFitRoom" parameterType="com.tnt.project.dto.FitRoomDTO">
         INSERT INTO FITROOM (
-            SEQ, MEMBER_ID, MODEL_IMAGE_URL, MODEL_NAME,
-            CLOTH_TYPE, UPPER_IMAGE_URL, UPPER_NAME,
-            LOWER_IMAGE_URL, LOWER_NAME, CATEGORY, RESULT_URL
+            SEQ, MEMBER_ID, MODELIMAGEURL, MODELNAME,
+            CLOTHTYPE, UPPERIMAGEURL, UPPERNAME,
+            LOWERIMAGEURL, LOWERNAME, CATEGORY, RESULTURL
         ) VALUES (
             FITROOM_SEQ.NEXTVAL,
-            #{memberId},
-            #{modelImageUrl},
-            #{modelName},
-            #{clothType},
-            #{upperImageUrl},
-            #{upperName},
-            #{lowerImageUrl},
-            #{lowerName},
-            #{category},
-            #{resultUrl}
+            #{memberId, jdbcType=VARCHAR},
+            #{modelImageUrl, jdbcType=CLOB},
+            #{modelName, jdbcType=VARCHAR},
+            #{clothType, jdbcType=VARCHAR},
+            #{upperImageUrl , jdbcType=CLOB},
+            #{upperName, jdbcType=VARCHAR},
+            #{lowerImageUrl, jdbcType=CLOB},
+            #{lowerName, jdbcType=VARCHAR},
+            #{category, jdbcType=VARCHAR},
+            #{resultUrl, jdbcType=CLOB}
         )
     </insert>
 
-   <select id="selectBySeq" resultType="com.tnt.project.dto.FitRoomDTO">
+    <select id="selectBySeq" resultType="com.tnt.project.dto.FitRoomDTO">
         SELECT * FROM FITROOM WHERE SEQ = #{seq}
     </select>
 
-   <select id="selectByMember" resultType="com.tnt.project.dto.FitRoomDTO">
+    <select id="selectByMember" resultType="com.tnt.project.dto.FitRoomDTO">
         SELECT * FROM FITROOM 
-        WHERE MEMBER_ID = #{memberId}
-        ORDER BY START_DATE DESC
+        WHERE MEMBER_ID = #{memberId, jdbcType=VARCHAR}
+        ORDER BY STARTDATE DESC
     </select>
 
-	
+   
 </mapper>

@@ -2,6 +2,7 @@ package com.tnt.project.services;
 
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,8 @@ public class FitRoomService {
 	@Autowired
 	private HistoryDAO hdao;
 
+	//	@Autowired
+	//	private FileService fileService; // 파일 서버/로컬 저장 서비스
 
 	@Value("${fitroom.api-key}")
 	private String apiKey;
@@ -156,81 +159,98 @@ public class FitRoomService {
 			throw new RuntimeException("파일 변환 실패", e);
 		}
 	}
+	  
 
+	
+	public void saveToDB(String imageUrl, String clothType, MultipartFile modelImage,
+			MultipartFile clothImage, MultipartFile lowerImage, String memberId) {
 
+		try {
+			// ================== 1️⃣ 모델 DB 저장 ==================
+			ModelDTO modelDTO = new ModelDTO();
+			if (modelImage != null) {
+				modelDTO.setModelUrl(Base64.getEncoder().encodeToString(modelImage.getBytes()));
+				modelDTO.setModelName(modelImage.getOriginalFilename());
+				modelDTO.setMemberId(memberId);
+				mdao.insertModel(modelDTO);
+			}
 
-	public String performFitRoom(MultipartFile modelImage,
-			MultipartFile upperImage,
-			MultipartFile lowerImage,
-			String clothType) {
+			// ================== 2️⃣ FitRoom 기록 DB 저장 ==================
+			FitRoomDTO fitRoomDTO = new FitRoomDTO();
+			fitRoomDTO.setClothType(clothType);
+			fitRoomDTO.setResultUrl(imageUrl);
+			fitRoomDTO.setMemberId(memberId);
 
-		// 1️⃣ TryOn Task 생성 + 결과 가져오기
-		String resultUrl = createTryOnAndGetResult(modelImage, upperImage, lowerImage, clothType);
+			if (modelImage != null) {
+				fitRoomDTO.setModelImageUrl(Base64.getEncoder().encodeToString(modelImage.getBytes()));
+				fitRoomDTO.setModelName(modelImage.getOriginalFilename());
+			}
+			if (clothImage != null) {
+				fitRoomDTO.setUpperImageUrl(Base64.getEncoder().encodeToString(clothImage.getBytes()));
+				fitRoomDTO.setUpperName(clothImage.getOriginalFilename());
+			}
+			if (lowerImage != null) {
+				fitRoomDTO.setLowerImageUrl(Base64.getEncoder().encodeToString(lowerImage.getBytes()));
+				fitRoomDTO.setLowerName(lowerImage.getOriginalFilename());
+			}
 
-		// 2️⃣ 모델 이미지 업로드 (DB 저장용)
-		String modelUrl = uploadImage(modelImage);
-		String upperUrl = upperImage != null ? uploadImage(upperImage) : null;
-		String lowerUrl = lowerImage != null ? uploadImage(lowerImage) : null;
+			fdao.insertFitRoom(fitRoomDTO);
 
-		// 3️⃣ 모델 DB 저장
-		ModelDTO modelDTO = new ModelDTO();
-		modelDTO.setModelUrl(modelUrl);
-		modelDTO.setModelName(modelImage.getOriginalFilename());
-		mdao.insertModel(modelDTO);
+			// ================== 3️⃣ History DB 저장 ==================
+			HistoryDTO historyDTO = new HistoryDTO();
+			historyDTO.setMemberId(memberId);
+			historyDTO.setResultUrl(imageUrl);
+			historyDTO.setName(modelDTO.getModelName());
+			historyDTO.setUpperImageUrl(fitRoomDTO.getUpperImageUrl());
+			historyDTO.setUpperName(fitRoomDTO.getUpperName());
+			historyDTO.setLowerImageUrl(fitRoomDTO.getLowerImageUrl());
+			historyDTO.setLowerName(fitRoomDTO.getLowerName());
 
-		// 4️⃣ FitRoom 기록 DB 저장
-		FitRoomDTO fitRoomDTO = new FitRoomDTO();
-		fitRoomDTO.setModelImageUrl(modelUrl);
-		fitRoomDTO.setModelName(modelImage.getOriginalFilename());
-		fitRoomDTO.setClothType(clothType);
-		fitRoomDTO.setUpperImageUrl(upperUrl);
-		fitRoomDTO.setUpperName(upperImage != null ? upperImage.getOriginalFilename() : null);
-		fitRoomDTO.setLowerImageUrl(lowerUrl);
-		fitRoomDTO.setLowerName(lowerImage != null ? lowerImage.getOriginalFilename() : null);
-		fitRoomDTO.setResultUrl(resultUrl);
-		fdao.insertFitRoom(fitRoomDTO);
+			hdao.insertHistory(historyDTO);
 
-		// 5️⃣ History DB 저장
-		HistoryDTO historyDTO = new HistoryDTO();
-		historyDTO.setResultUrl(resultUrl);
-		historyDTO.setName(modelDTO.getModelName());
-		historyDTO.setUpperImageUrl(fitRoomDTO.getUpperImageUrl());
-		historyDTO.setUpperName(fitRoomDTO.getUpperName());
-		historyDTO.setLowerImageUrl(fitRoomDTO.getLowerImageUrl());
-		historyDTO.setLowerName(fitRoomDTO.getLowerName());
-		hdao.insertHistory(historyDTO);
+			// ================== 4️⃣ Closet DB 저장 ==================
+			ClosetDTO closetDTO = new ClosetDTO();
+			closetDTO.setMemberId(memberId);
+			closetDTO.setClothType(clothType);
+			closetDTO.setUpperImageUrl(fitRoomDTO.getUpperImageUrl());
+			closetDTO.setUpperName(fitRoomDTO.getUpperName());
+			closetDTO.setLowerImageUrl(fitRoomDTO.getLowerImageUrl());
+			closetDTO.setLowerName(fitRoomDTO.getLowerName());
 
-		// 6️⃣ Closet DB 저장
-		ClosetDTO closetDTO = new ClosetDTO();
-		closetDTO.setClothType(clothType);
-		closetDTO.setUpperImageUrl(fitRoomDTO.getUpperImageUrl());
-		closetDTO.setUpperName(fitRoomDTO.getUpperName());
-		closetDTO.setLowerImageUrl(fitRoomDTO.getLowerImageUrl());
-		closetDTO.setLowerName(fitRoomDTO.getLowerName());
-		cdao.insertCloset(closetDTO);
+			cdao.insertCloset(closetDTO);
 
-		// 최종 합성 이미지 URL 반환
-		return resultUrl;
+		} catch (IOException e) {
+			throw new RuntimeException("이미지 변환 오류", e);
+		}
 	}
+
+
+
+
+
+
+
+
 
 
 	//
-	public String createTryOnTaskAndSave(MultipartFile modelImage,
-			MultipartFile upperImage,
-			MultipartFile lowerImage,
-			String clothType) {
+	//	public String createTryOnTaskAndSave(MultipartFile modelImage,
+	//			MultipartFile upperImage,
+	//			MultipartFile lowerImage,
+	//			String clothType) {
+	//
+	//		// 1️⃣ Task 생성 (이미지 업로드는 나중에 결과가 나오면 수행)
+	//		String taskId = createTryOnTask(modelImage, upperImage, lowerImage, clothType);
+	//
+	//		// 2️⃣ FitRoomDTO에 Task ID만 저장 (DB 저장 최소화)
+	//		FitRoomDTO fitRoomDTO = new FitRoomDTO();
+	//		fitRoomDTO.setTaskId(taskId);
+	//		fitRoomDTO.setClothType(clothType);
+	//		fdao.insertFitRoom(fitRoomDTO);
+	//
+	//		// 3️⃣ Task ID 반환
+	//		return taskId;
+	//	}
 
-		// 1️⃣ Task 생성 (이미지 업로드는 나중에 결과가 나오면 수행)
-		String taskId = createTryOnTask(modelImage, upperImage, lowerImage, clothType);
-
-		// 2️⃣ FitRoomDTO에 Task ID만 저장 (DB 저장 최소화)
-		FitRoomDTO fitRoomDTO = new FitRoomDTO();
-		fitRoomDTO.setTaskId(taskId);
-		fitRoomDTO.setClothType(clothType);
-		fdao.insertFitRoom(fitRoomDTO);
-
-		// 3️⃣ Task ID 반환
-		return taskId;
-	}
 
 }

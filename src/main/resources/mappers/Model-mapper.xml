@@ -9,14 +9,14 @@
         INSERT INTO MODEL (
             SEQ,
             MEMBER_ID,
-            MODEL_URL,
-            MODEL_NAME,
-            CREATED_AT
+            MODELURL,
+            MODELNAME,
+            SAVEDATE
         ) VALUES (
             MODEL_SEQ.NEXTVAL,
-            #{memberId},
-            #{modelUrl},
-            #{modelName},
+            #{memberId, jdbcType=VARCHAR},
+            #{modelUrl, jdbcType=CLOB},
+            #{modelName, jdbcType=VARCHAR},
             SYSDATE
         )
     </insert>

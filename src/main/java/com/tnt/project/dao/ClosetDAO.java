@@ -12,7 +12,7 @@ public class ClosetDAO {
     @Autowired
     private SqlSessionTemplate mybatis;
 
-    public void insertCloset(ClosetDTO closetDTO) {
-        mybatis.insert("Closet.insertCloset", closetDTO);
+    public int insertCloset(ClosetDTO closetDTO) {
+    	return mybatis.insert("Closet.insertCloset", closetDTO);
     }
 }

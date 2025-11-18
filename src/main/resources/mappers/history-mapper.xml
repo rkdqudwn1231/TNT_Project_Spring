@@ -10,24 +10,30 @@
         INSERT INTO HISTORY (
             SEQ,
             MEMBER_ID,
-            RESULT_URL,
+            RESULTURL,
             NAME,
-            UPPER_IMAGE_URL,
-            UPPER_NAME,
-            LOWER_IMAGE_URL,
-            LOWER_NAME,
-            SAVE_DATE
+            UPPERIMAGEURL,
+            UPPERNAME,
+            LOWERIMAGEURL,
+            LOWERNAME,
+            SAVEDATE
         ) VALUES (
             HISTORY_SEQ.NEXTVAL,
-            #{memberId},
-            #{resultUrl},
-            #{name},
-            #{upperImageUrl},
-            #{upperName},
-            #{lowerImageUrl},
-            #{lowerName},
+            #{memberId, jdbcType=VARCHAR},
+            #{resultUrl, jdbcType=CLOB},
+            #{name, jdbcType=VARCHAR},
+            #{upperImageUrl, jdbcType=CLOB},
+            #{upperName, jdbcType=VARCHAR},
+            #{lowerImageUrl, jdbcType=CLOB},
+            #{lowerName, jdbcType=VARCHAR},
             SYSDATE
         )
     </insert>
+    
+    <select id="getHistoryList" resultType="com.tnt.project.dto.HistoryDTO">
+    
+    select * from history 
+    
+    </select>
 
 </mapper>

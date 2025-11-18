@@ -9,22 +9,22 @@
         INSERT INTO CLOSET (
             SEQ,
             MEMBER_ID,
-            CLOTH_TYPE,
-            UPPER_IMAGE_URL,
-            UPPER_NAME,
-            LOWER_IMAGE_URL,
-            LOWER_NAME,
+            CLOTHTYPE,
+            UPPERIMAGEURL,
+            UPPERNAME,
+            LOWERIMAGEURL,
+            LOWERNAME,
             CATEGORY,
-            CREATED_AT
+            SAVEDATE
         ) VALUES (
             CLOSET_SEQ.NEXTVAL,
-            #{memberId},
-            #{clothType},
-            #{upperImageUrl},
-            #{upperName},
-            #{lowerImageUrl},
-            #{lowerName},
-            #{category},
+            #{memberId, jdbcType=VARCHAR},
+            #{clothType, jdbcType=VARCHAR},
+            #{upperImageUrl, jdbcType=CLOB},
+            #{upperName, jdbcType=VARCHAR},
+            #{lowerImageUrl, jdbcType=CLOB},
+            #{lowerName, jdbcType=VARCHAR},
+            #{category, jdbcType=VARCHAR},
             SYSDATE
         )
     </insert>

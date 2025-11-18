@@ -35,16 +35,11 @@ public class FitRoomController {
 		
 		boolean hdMode = false; // HD 모드 강제 OFF
 
-		
-		//   String resultImageUrl = fitRoomService.performFitRoom( modelImage, upperImage, lowerImage, clothType);
-
 
 	    String resultImageUrl = fitRoomService.createTryOnAndGetResult(
 	        modelImage, upperImage, lowerImage, clothType);
 
-	    
-	   
-	    
+	
 	    Map<String, Object> result = Map.of(
 	        "status", "ok",
 	        "imageUrl", resultImageUrl
@@ -54,6 +49,23 @@ public class FitRoomController {
 	}
 
 	
+	
+
+	@PostMapping("/save")
+	public ResponseEntity<?> saveTryOnResult(
+	        @RequestParam("image_url") String imageUrl,
+	        @RequestParam("cloth_type") String clothType,
+	        @RequestParam("model_image") MultipartFile modelImage,
+	        @RequestParam(value = "cloth_image", required = false) MultipartFile clothImage,
+	        @RequestParam(value = "lower_cloth_image", required = false) MultipartFile lowerImage,
+	        @RequestParam("memberId") String memberId
+	) {
+	    fitRoomService.saveToDB(imageUrl, clothType, modelImage, clothImage, lowerImage , memberId);
+	    return ResponseEntity.ok("saved");
+	}
+
+
+
 	
 	
 	
@@ -66,6 +78,9 @@ public class FitRoomController {
 	    result.put("imageUrl", imageUrl); // 완료되면 합성 이미지 URL 반환
 	    return ResponseEntity.ok(result);
 	}
+	
+	
+	
 }
 
 
