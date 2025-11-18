@@ -25,11 +25,11 @@
         )
     </insert>
 
-    <select id="selectBySeq" resultType="FitRoomDTO">
+   <select id="selectBySeq" resultType="com.tnt.project.dto.FitRoomDTO">
         SELECT * FROM FITROOM WHERE SEQ = #{seq}
     </select>
 
-    <select id="selectByMember" resultType="FitRoomDTO">
+   <select id="selectByMember" resultType="com.tnt.project.dto.FitRoomDTO">
         SELECT * FROM FITROOM 
         WHERE MEMBER_ID = #{memberId}
         ORDER BY START_DATE DESC
