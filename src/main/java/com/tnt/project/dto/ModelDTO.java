@@ -7,18 +7,20 @@ public class ModelDTO {
     private String memberId;
     private String modelUrl;
     private String modelName;
+    private String sex;
     private String taskId;
     private Date saveDate;
     
     public ModelDTO() {}
     
     
-    public ModelDTO(int seq, String memberId, String modelUrl, String modelName, Date saveDate) {
+    public ModelDTO(int seq, String memberId, String modelUrl, String modelName, String sex, Date saveDate) {
 		super();
 		this.seq = seq;
 		this.memberId = memberId;
 		this.modelUrl = modelUrl;
 		this.modelName = modelName;
+		this.sex = sex;
 		this.saveDate = saveDate;
 	}
 	
@@ -28,6 +30,16 @@ public class ModelDTO {
     
     
     
+	public String getSex() {
+		return sex;
+	}
+
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+
 	public Date getSaveDate() {
 		return saveDate;
 	}

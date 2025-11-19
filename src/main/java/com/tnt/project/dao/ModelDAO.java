@@ -23,6 +23,11 @@ public class ModelDAO {
 			
 			return mybatis.selectList("Model.getModelList");
 		}
+
+		public int deleteModel(int seq) {
+			
+			return mybatis.delete("Model.deleteModel",seq);
+		}
 	
 	
 

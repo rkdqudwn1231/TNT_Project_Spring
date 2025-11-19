@@ -22,4 +22,9 @@ public class ClosetDAO {
 	
 		return mybatis.selectList("Closet.getClosetList");
 	}
+
+	public int deleteCloth(Object seq) {
+		
+		return mybatis.delete("Closet.deleteCloth" , seq);
+	}
 }

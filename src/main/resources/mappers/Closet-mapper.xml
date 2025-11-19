@@ -34,5 +34,13 @@
     select * from closet 
     
     </select>
-
+    
+    
+    
+    <delete id="deleteCloth" parameterType="int">
+    
+    delete from closet where seq = #{seq}
+    
+    </delete>
+    
 </mapper>

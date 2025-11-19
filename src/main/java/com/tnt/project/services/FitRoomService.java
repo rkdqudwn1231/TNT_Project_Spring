@@ -161,11 +161,13 @@ public class FitRoomService {
 	}
 	  
 
-	
+	// DB 저장
 	public void saveToDB(String imageUrl, String clothType, MultipartFile modelImage,
-			MultipartFile clothImage, MultipartFile lowerImage, String memberId) {
+			MultipartFile clothImage, MultipartFile lowerImage, String memberId , 
+			String ClosetCategory , String modelSex) {
 		System.out.println("UpperImage: " + (clothImage != null));
 		System.out.println("LowerImage: " + (lowerImage != null));
+		System.out.println("modelSex: " + (modelSex != null));
 		try {
 			// ================== 1️⃣ 모델 DB 저장 ==================
 			ModelDTO modelDTO = new ModelDTO();
@@ -173,7 +175,8 @@ public class FitRoomService {
 				modelDTO.setModelUrl(Base64.getEncoder().encodeToString(modelImage.getBytes()));
 				modelDTO.setModelName(modelImage.getOriginalFilename());
 				modelDTO.setMemberId(memberId);
-				mdao.insertModel(modelDTO);
+				modelDTO.setSex(modelSex);
+				mdao.insertModel(modelDTO);	
 			}
 
 			// ================== 2️⃣ FitRoom 기록 DB 저장 ==================
@@ -182,6 +185,8 @@ public class FitRoomService {
 			fitRoomDTO.setResultUrl(imageUrl);
 			fitRoomDTO.setMemberId(memberId);
 
+			
+			// DB에 저장하기 위해 이미지 파일을 byte => base64로 변환 => 이후 React에서 base64를 json으로 변환하기
 			if (modelImage != null) {
 				fitRoomDTO.setModelImageUrl(Base64.getEncoder().encodeToString(modelImage.getBytes()));
 				fitRoomDTO.setModelName(modelImage.getOriginalFilename());
@@ -213,11 +218,11 @@ public class FitRoomService {
 			ClosetDTO closetDTO = new ClosetDTO();
 			closetDTO.setMemberId(memberId);
 			closetDTO.setClothType(clothType);
+			closetDTO.setCategory(ClosetCategory);
 			closetDTO.setUpperImageUrl(fitRoomDTO.getUpperImageUrl());
 			closetDTO.setUpperName(fitRoomDTO.getUpperName());
 			closetDTO.setLowerImageUrl(fitRoomDTO.getLowerImageUrl());
 			closetDTO.setLowerName(fitRoomDTO.getLowerName());
-
 			cdao.insertCloset(closetDTO);
 
 		} catch (IOException e) {

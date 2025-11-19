@@ -20,4 +20,9 @@ public class ClosetService {
 		
 
 	}
+
+		public int deleteCloth(Object seq) {
+		
+			return closetdao.deleteCloth(seq);
+		}
 }

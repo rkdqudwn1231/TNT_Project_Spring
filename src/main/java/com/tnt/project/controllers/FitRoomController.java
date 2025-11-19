@@ -58,9 +58,11 @@ public class FitRoomController {
 	        @RequestParam("model_image") MultipartFile modelImage,
 	        @RequestParam(value = "cloth_image", required = false) MultipartFile clothImage,
 	        @RequestParam(value = "lower_cloth_image", required = false) MultipartFile lowerImage,
-	        @RequestParam("memberId") String memberId
+	        @RequestParam("memberId") String memberId,
+	        @RequestParam("ClosetCategory") String ClosetCategory,
+	        @RequestParam("sex") String modelSex
 	) {
-	    fitRoomService.saveToDB(imageUrl, clothType, modelImage, clothImage, lowerImage , memberId);
+	    fitRoomService.saveToDB(imageUrl, clothType, modelImage, clothImage, lowerImage , memberId,ClosetCategory,modelSex);
 	    return ResponseEntity.ok("saved");
 	}
 

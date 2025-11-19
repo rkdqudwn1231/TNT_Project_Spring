@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class ClosetDTO {
 
-	private Long seq;
+	private int seq;
 	private String memberId;
 	private String clothType;
 	private String upperImageUrl;
@@ -19,7 +19,7 @@ public class ClosetDTO {
 	public ClosetDTO() {}
 	
 	
-	public ClosetDTO(Long seq, String memberId, String clothType, String upperImageUrl, String upperName,
+	public ClosetDTO(int seq, String memberId, String clothType, String upperImageUrl, String upperName,
 			String lowerImageUrl, String lowerName, String category, Date saveDate) {
 		super();
 		this.seq = seq;
@@ -47,10 +47,10 @@ public class ClosetDTO {
 	}
 
 
-	public Long getSeq() {
+	public int getSeq() {
 		return seq;
 	}
-	public void setSeq(Long seq) {
+	public void setSeq(int seq) {
 		this.seq = seq;
 	}
 	public String getMemberId() {

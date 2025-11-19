@@ -11,22 +11,30 @@
             MEMBER_ID,
             MODELURL,
             MODELNAME,
+            SEX,
             SAVEDATE
         ) VALUES (
             MODEL_SEQ.NEXTVAL,
             #{memberId, jdbcType=VARCHAR},
             #{modelUrl, jdbcType=CLOB},
             #{modelName, jdbcType=VARCHAR},
+            #{sex, jdbcType=VARCHAR},
             SYSDATE
         )
     </insert>
 
 
- <select id="getModelList" resultType="com.tnt.project.dto.ModelDTO">
+	<select id="getModelList" resultType="com.tnt.project.dto.ModelDTO">
     
     select * from model 
     
     </select>
+    
+    <delete id="deleteModel" parameterType="int">
+    
+    delete from model where seq = #{seq}
+    
+    </delete>
     
     
 </mapper>

@@ -3,8 +3,10 @@ package com.tnt.project.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tnt.project.dto.ModelDTO;
@@ -25,6 +27,18 @@ public class ModelController {
 		List<ModelDTO> list = modelService.getModelList();
 		
 		return list;
+				
+	}
+	
+	
+	
+	@DeleteMapping("/delete")
+	public int deleteModel(@RequestParam int seq) {
+		
+		int del = modelService.deleteModel(seq);
+		
+		
+		return del;
 				
 	}
 }

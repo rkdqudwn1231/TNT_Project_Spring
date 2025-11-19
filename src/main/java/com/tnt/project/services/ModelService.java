@@ -19,4 +19,11 @@ public class ModelService {
 		return modeldao.getModelList();
 	}
 
+	
+	// 삭제
+	public int deleteModel(int seq) {
+		
+		return modeldao.deleteModel(seq);
+	}
+
 }
