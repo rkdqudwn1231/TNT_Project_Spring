@@ -22,5 +22,10 @@ public class HistoryDAO {
 			
 			return mybatis.selectList("History.getHistoryList");
 		}
+
+		public int deleteHistory(int seq) {
+			
+			return mybatis.delete("History.deleteHistory",seq);
+		}
 	
 }

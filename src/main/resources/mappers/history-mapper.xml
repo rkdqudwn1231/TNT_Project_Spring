@@ -35,5 +35,11 @@
     select * from history 
     
     </select>
+    
+    <delete id="deleteHistory" parameterType="int">
+    
+    delete from history where seq = #{seq}
+    
+    </delete>
 
 </mapper>

@@ -3,8 +3,10 @@ package com.tnt.project.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tnt.project.dto.HistoryDTO;
@@ -29,4 +31,14 @@ public class HistoryController {
 		return list;
 				
 	}
+	
+	@DeleteMapping("/delete")
+	public int deleteHistory(@RequestParam int seq) {
+		
+		int del = historyService.deleteHistory(seq);
+		
+		return del;
+	}
+	
+	
 }

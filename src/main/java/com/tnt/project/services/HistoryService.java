@@ -19,4 +19,9 @@ public class HistoryService {
 		return historydao.getHistoryList();
 	}
 
+	public int deleteHistory(int seq) {
+		
+		return historydao.deleteHistory(seq);
+	}
+
 }
