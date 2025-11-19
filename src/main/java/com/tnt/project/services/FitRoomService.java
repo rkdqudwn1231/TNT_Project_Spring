@@ -165,9 +165,7 @@ public class FitRoomService {
 	public void saveToDB(String imageUrl, String clothType, MultipartFile modelImage,
 			MultipartFile clothImage, MultipartFile lowerImage, String memberId , 
 			String ClosetCategory , String modelSex) {
-		System.out.println("UpperImage: " + (clothImage != null));
-		System.out.println("LowerImage: " + (lowerImage != null));
-		System.out.println("modelSex: " + (modelSex != null));
+	
 		try {
 			// ================== 1️⃣ 모델 DB 저장 ==================
 			ModelDTO modelDTO = new ModelDTO();
