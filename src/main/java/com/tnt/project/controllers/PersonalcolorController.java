@@ -11,7 +11,7 @@ import com.tnt.project.dto.PersonalcolorDTO;
 import com.tnt.project.services.PersonalcolorService;
 
 @RestController
-@RequestMapping("Personalcolor")
+@RequestMapping("color")
 public class PersonalcolorController {
 	
 	@Autowired

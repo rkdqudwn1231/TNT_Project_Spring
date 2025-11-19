@@ -3,7 +3,6 @@ package com.tnt.project.dto;
 public class PersonalcolorDTO {
 	private int seq;
 	private String season;
-
 	private String tone_type;
 	private String best_color;
 	private String worst_color;

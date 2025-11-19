@@ -16,6 +16,6 @@ public class PersonalcolorDAO {
 	
 	public int insert(PersonalcolorDTO dto) {
 		System.out.println("왔어용");
-		return mybatis.insert("personalcolor.insert",dto);
+		return mybatis.insert("color.insert",dto);
 	}
 }
