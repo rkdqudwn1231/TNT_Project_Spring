@@ -82,10 +82,15 @@
 		</dependency>
 		<!--11.20 GCP 의존성 추가-->
 		<dependency>
-    	<groupId>com.google.cloud</groupId>
-    	<artifactId>google-cloud-storage</artifactId>
-    	<version>2.28.0</version>  
+	    	<groupId>com.google.cloud</groupId>
+	    	<artifactId>google-cloud-storage</artifactId>
+	    	<version>2.28.0</version>  
 		</dependency> 
+		<dependency>
+		    <groupId>com.google.genai</groupId>
+		    <artifactId>google-genai</artifactId>
+		    <version>1.28.0</version>
+		  </dependency>
 	</dependencies>
 
 	<build>
