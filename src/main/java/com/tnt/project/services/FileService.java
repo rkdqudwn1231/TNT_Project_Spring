@@ -35,4 +35,15 @@ public class FileService {
         storage.create(blobInfo, data);
         return String.format("https://storage.googleapis.com/%s/%s", bucketName, fileName);
     }
+    
+    
+    
+    // 다운로드 메서드 추가
+    public byte[] download(String fileName) {
+        var blob = storage.get(bucketName, fileName);
+        if (blob == null) {
+            throw new RuntimeException("파일을 찾을 수 없습니다: " + fileName);
+        }
+        return blob.getContent();
+    }
 }

@@ -27,5 +27,10 @@ public class HistoryDAO {
 			
 			return mybatis.delete("History.deleteHistory",seq);
 		}
+
+		public HistoryDTO getHistoryBySeq(int seq) {
+			
+			return mybatis.selectOne("History.getHistoryBySeq",seq);
+		}
 	
 }

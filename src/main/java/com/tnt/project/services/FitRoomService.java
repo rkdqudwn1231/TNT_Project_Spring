@@ -66,13 +66,7 @@ public class FitRoomService {
 	private FileService Fserv;
 
 
-	
 
-
-
-	
-	
-	
 	
 	
 	// 이미지 업로드 
@@ -92,6 +86,8 @@ public class FitRoomService {
 		Map data = (Map) response.getBody().get("data");
 		return (String) data.get("id");
 	}
+	
+	
 
 	// Task 완료 후 signed URL에서 바로 이미지 다운로드 11.20
 	public byte[] getResultBytes(String taskId) {
@@ -223,8 +219,6 @@ public class FitRoomService {
 		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
 
 
-
-
 		ResponseEntity<Map> response = restTemplate.postForEntity(url, request, Map.class);
 		Map<String, Object> bodyMap = response.getBody();
 
@@ -250,8 +244,6 @@ public class FitRoomService {
 		}
 
 		System.out.println("Task ID: " + taskId);
-
-
 
 
 
@@ -316,7 +308,6 @@ public class FitRoomService {
 
 
 
-
 	// 이미지 GCP + DB 저장
 	public void saveToDB(String taskId, String clothType, MultipartFile modelImage,
 			MultipartFile clothImage, MultipartFile lowerImage, String memberId, 
@@ -350,14 +341,14 @@ public class FitRoomService {
 			if (clothImage != null) {
 				fitRoomDTO.setUpperImageUrl(Fserv.upload(
 						clothImage.getBytes(),
-						"cloths/" + System.currentTimeMillis() + "_" + clothImage.getOriginalFilename(),
+						"closet/upper/" + System.currentTimeMillis() + "_" + clothImage.getOriginalFilename(),
 						clothImage.getContentType()
 						));
 			}
 			if (lowerImage != null) {
 				fitRoomDTO.setLowerImageUrl(Fserv.upload(
 						lowerImage.getBytes(),
-						"cloths/" + System.currentTimeMillis() + "_" + lowerImage.getOriginalFilename(),
+						"closet/lower/" + System.currentTimeMillis() + "_" + lowerImage.getOriginalFilename(),
 						lowerImage.getContentType()
 						));
 			}

@@ -72,7 +72,6 @@
 	//	}
 	
 		
-		
 	
 		@PostMapping("/save")
 		public ResponseEntity<?> saveTryOnResult(
@@ -89,10 +88,7 @@
 		    return ResponseEntity.ok("saved");
 		}
 	
-	
-	
-		
-		
+
 		
 		
 		@GetMapping("/status")

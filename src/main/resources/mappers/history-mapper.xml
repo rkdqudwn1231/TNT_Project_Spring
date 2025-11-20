@@ -41,5 +41,9 @@
     delete from history where seq = #{seq}
     
     </delete>
+    
+    <select id="getHistoryBySeq"  parameterType="int" resultType="com.tnt.project.dto.HistoryDTO">
+    select * from history where seq = #{seq}
+    </select>
 
 </mapper>
