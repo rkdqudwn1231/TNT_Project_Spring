@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="Chatbot">
+	<select id="getHistory" parameterType="String" resultType="com.tnt.project.dto.ChatHistoryDTO">
+        SELECT *
+        FROM chathistory
+        WHERE USER_ID = #{userId}
+        ORDER BY SEQ ASC
+    </select>
+
+    <insert id="insertHistory" parameterType="com.tnt.project.dto.ChatHistoryDTO">
+        INSERT INTO chathistory (SEQ,USER_ID,ROLE, MESSAGE)
+        VALUES (chathistory_seq.nextval,#{user_id}, #{role},#{message})
+    </insert>
+
+	<insert id="insertSummary" parameterType="java.util.Map">
+        INSERT INTO chathistory (USER_ID,summary, updated_at)
+        VALUES (#{userId}, #{summary}, )
+    </insert>
+    
+    <delete id="removeHistory" parameterType="String">
+        delete from chathistory where user_id = #{userId}
+    </delete>
+    
+    <delete id="removeOldHistory" parameterType="String">
+    DELETE FROM chathistory
+		WHERE user_id = #{userId}
+		  AND seq NOT IN (
+		      SELECT seq FROM (
+		          SELECT seq,
+		                 ROW_NUMBER() OVER (ORDER BY seq DESC) AS rn
+		          FROM chathistory
+		          WHERE user_id = #{userId}
+		      )
+		      WHERE rn &lt;= 6
+		  );
+</delete>
+</mapper>
