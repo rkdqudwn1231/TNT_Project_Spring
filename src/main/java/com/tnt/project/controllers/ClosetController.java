@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,5 +54,17 @@ public class ClosetController {
 
 		return del;
 	}
+	
+	@PutMapping("/edit")
+	public int editCloth(@RequestParam Object seq , @RequestParam String name , @RequestParam String type,
+						 @RequestParam String category  , @RequestParam String url) {
+		
+		
+		int edit = closetService.editCloth(seq, name , type ,category, url);
+		
+		return edit;
+	}
 
+	
+	
 }

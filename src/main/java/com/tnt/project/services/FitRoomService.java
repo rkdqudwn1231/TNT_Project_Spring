@@ -259,39 +259,6 @@ public class FitRoomService {
 
 
 
-	//	public String createTryOnTask(MultipartFile modelImage, MultipartFile upperImage,
-	//			MultipartFile lowerImage, String clothType) {
-	//
-	//		System.out.println("Creating TryOn task with clothType=" + clothType + "중복1");
-	//
-	//		String url = "https://platform.fitroom.app/api/tryon/v2/tasks";
-	//
-	//		HttpHeaders headers = new HttpHeaders();
-	//		headers.set("X-API-KEY", apiKey);
-	//		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-	//
-	//		MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-	//		body.add("model_image", toResource(modelImage));
-	//		body.add("cloth_type", clothType);
-	//
-	//		if ("combo".equals(clothType)) {
-	//			if (upperImage != null) body.add("cloth_image", toResource(upperImage));
-	//			if (lowerImage != null) body.add("lower_cloth_image", toResource(lowerImage));
-	//		} else {
-	//			if (upperImage != null) body.add("cloth_image", toResource(upperImage));
-	//		}
-	//
-	//		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(body, headers);
-	//
-	//		ResponseEntity<Map> response = restTemplate.postForEntity(url, request, Map.class);
-	//
-	//		System.out.println("FITROOM response = " + response.getBody());   // ★ 로그추가 ★
-	//
-	//		return (String) response.getBody().get("task_id");
-	//	}
-
-
-
 	// MultipartFile → Resource 변환
 	private Resource toResource(MultipartFile file) {
 		try {
@@ -392,94 +359,6 @@ public class FitRoomService {
 		}
 	}
 
-
-	// 11.19 쓰던 url 그대로받기 
-
-	//	private String getDownloadSignedUrl(String taskId) {
-	//		if (taskId == null) throw new RuntimeException("taskId is null");
-	//
-	//		String url = "https://platform.fitroom.app/api/tryon/v2/tasks/" + taskId;
-	//		ResponseEntity<Map> res = restTemplate.getForEntity(url, Map.class);
-	//		Map body = res.getBody();
-	//
-	//		if (body == null) throw new RuntimeException("API Response is null");
-	//
-	//		if ("completed".equalsIgnoreCase((String) body.get("status"))) {
-	//			return (String) body.get("download_signed_url");
-	//		}
-	//
-	//		throw new RuntimeException("Task not completed yet");
-	//	}
-
-
-
-	// 11.19 백업
-
-	//	public void saveToDB(String imageUrl, String clothType, MultipartFile modelImage,
-	//			MultipartFile clothImage, MultipartFile lowerImage, String memberId , 
-	//			String ClosetCategory , String modelSex) {
-	//
-	//		try {
-	//			// ================== 1️⃣ 모델 DB 저장 ==================
-	//			ModelDTO modelDTO = new ModelDTO();
-	//			if (modelImage != null) {
-	//				modelDTO.setModelUrl(Base64.getEncoder().encodeToString(modelImage.getBytes()));
-	//				modelDTO.setModelName(modelImage.getOriginalFilename());
-	//				modelDTO.setMemberId(memberId);
-	//				modelDTO.setSex(modelSex);
-	//				mdao.insertModel(modelDTO);	
-	//			}
-	//
-	//			// ================== 2️⃣ FitRoom 기록 DB 저장 ==================
-	//			FitRoomDTO fitRoomDTO = new FitRoomDTO();
-	//			fitRoomDTO.setClothType(clothType);
-	//			fitRoomDTO.setResultUrl(imageUrl);
-	//			fitRoomDTO.setMemberId(memberId);
-	//
-	//
-	//			// DB에 저장하기 위해 이미지 파일을 byte => base64로 변환 => 이후 React에서 base64를 json으로 변환하기
-	//			if (modelImage != null) {
-	//				fitRoomDTO.setModelImageUrl(Base64.getEncoder().encodeToString(modelImage.getBytes()));
-	//				fitRoomDTO.setModelName(modelImage.getOriginalFilename());
-	//			}
-	//			if (clothImage != null) {
-	//				fitRoomDTO.setUpperImageUrl(Base64.getEncoder().encodeToString(clothImage.getBytes()));
-	//				fitRoomDTO.setUpperName(clothImage.getOriginalFilename());
-	//			}
-	//			if (lowerImage != null) {
-	//				fitRoomDTO.setLowerImageUrl(Base64.getEncoder().encodeToString(lowerImage.getBytes()));
-	//				fitRoomDTO.setLowerName(lowerImage.getOriginalFilename());
-	//			}
-	//
-	//			fdao.insertFitRoom(fitRoomDTO);
-	//
-	//			// ================== 3️⃣ History DB 저장 ==================
-	//			HistoryDTO historyDTO = new HistoryDTO();
-	//			historyDTO.setMemberId(memberId);
-	//			historyDTO.setResultUrl(imageUrl);
-	//			historyDTO.setName(modelDTO.getModelName());
-	//			historyDTO.setUpperImageUrl(fitRoomDTO.getUpperImageUrl());
-	//			historyDTO.setUpperName(fitRoomDTO.getUpperName());
-	//			historyDTO.setLowerImageUrl(fitRoomDTO.getLowerImageUrl());
-	//			historyDTO.setLowerName(fitRoomDTO.getLowerName());
-	//
-	//			hdao.insertHistory(historyDTO);
-	//
-	//			// ================== 4️⃣ Closet DB 저장 ==================
-	//			ClosetDTO closetDTO = new ClosetDTO();
-	//			closetDTO.setMemberId(memberId);
-	//			closetDTO.setClothType(clothType);
-	//			closetDTO.setCategory(ClosetCategory);
-	//			closetDTO.setUpperImageUrl(fitRoomDTO.getUpperImageUrl());
-	//			closetDTO.setUpperName(fitRoomDTO.getUpperName());
-	//			closetDTO.setLowerImageUrl(fitRoomDTO.getLowerImageUrl());
-	//			closetDTO.setLowerName(fitRoomDTO.getLowerName());
-	//			cdao.insertCloset(closetDTO);
-	//
-	//		} catch (IOException e) {
-	//			throw new RuntimeException("이미지 변환 오류", e);
-	//		}
-	//	}
 
 
 

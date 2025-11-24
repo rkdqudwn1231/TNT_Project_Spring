@@ -1,6 +1,7 @@
 package com.tnt.project.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,23 +13,35 @@ import com.tnt.project.dto.ModelDTO;
 @Repository
 public class ModelDAO {
 
-	   @Autowired
-	    private SqlSessionTemplate mybatis;
+	@Autowired
+	private SqlSessionTemplate mybatis;
 
-	    public int insertModel(ModelDTO modelDTO) {
-	    	return mybatis.insert("Model.insertModel", modelDTO);
-	    }
+	public Object modelinsert(ModelDTO dto) {
 
-		public List<ModelDTO> getModelList() {
-			
-			return mybatis.selectList("Model.getModelList");
-		}
+		return mybatis.insert("Model.insertModel",dto);
+	}
 
-		public int deleteModel(int seq) {
-			
-			return mybatis.delete("Model.deleteModel",seq);
-		}
+	public int insertModel(ModelDTO modelDTO) {
+		return mybatis.insert("Model.insertModel", modelDTO);
+	}
+
+	public List<ModelDTO> getModelList() {
+
+		return mybatis.selectList("Model.getModelList");
+	}
+
+	public int deleteModel(int seq) {
+
+		return mybatis.delete("Model.deleteModel",seq);
+	}
+
+	public int editModel(Map<String, Object> params) {
 	
-	
+		return mybatis.update("Model.editModel",params);
+	}
+
+
+
+
 
 }

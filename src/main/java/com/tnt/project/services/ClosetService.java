@@ -1,6 +1,8 @@
 package com.tnt.project.services;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,6 +72,21 @@ public class ClosetService {
 	public int deleteCloth(Object seq) {
 
 		return closetdao.deleteCloth(seq);
+	}
+
+
+
+
+	public int editCloth(Object seq, String name, String type,String category , String url) {
+		
+		Map<String , Object> param = new HashMap<>();
+		param.put("seq", seq);
+		param.put("name", name);
+		param.put("type", type);
+		param.put("category", category);
+		param.put("url", url);
+		
+		return closetdao.editCloth(param);
 	}
 
 

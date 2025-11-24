@@ -36,5 +36,15 @@
     
     </delete>
     
+    <update id="editModel" parameterType="map">
+    
+    update model 
+    set modelname = #{name} , 
+    sex = #{sex} 
+    where seq = #{seq}
+    
+    </update>
+    
+    
     
 </mapper>

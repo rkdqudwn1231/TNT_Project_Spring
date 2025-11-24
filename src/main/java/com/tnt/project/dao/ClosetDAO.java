@@ -1,6 +1,7 @@
 package com.tnt.project.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,10 @@ public class ClosetDAO {
 	public int deleteCloth(Object seq) {
 		
 		return mybatis.delete("Closet.deleteCloth" , seq);
+	}
+
+	public int editCloth(Map<String, Object> param) {
+	
+		return mybatis.update("Closet.editCloth" , param);
 	}
 }

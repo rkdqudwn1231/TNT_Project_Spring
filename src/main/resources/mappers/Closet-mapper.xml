@@ -35,12 +35,38 @@
     
     </select>
     
-    
+
     
     <delete id="deleteCloth" parameterType="int">
     
     delete from closet where seq = #{seq}
     
     </delete>
+    
+    
+	<update id="editCloth" parameterType="map">
+    update closet
+    <set>
+        <choose>
+            <when test="type eq 'upper'">
+                uppername = #{name},
+                upperimageurl = #{url},
+                lowername = null,
+                lowerimageurl = null
+            </when>
+            
+            <otherwise>
+                lowername = #{name},
+                lowerimageurl = #{url},
+                uppername = null,
+                upperimageurl = null
+            </otherwise>
+        </choose>
+        ,clothtype = #{type} , category = #{category}
+    </set>
+    where seq = #{seq}
+	</update>
+
+
     
 </mapper>
