@@ -7,14 +7,12 @@ import org.springframework.stereotype.Repository;
 import com.tnt.project.dto.MemberDTO;
 
 @Repository
-public class AuthDAO {
-	
-	@Autowired
-	private SqlSession mybatis;
+public class MemberDAO {
 
-	public MemberDTO findByUserId(String id) {
-		
-		return mybatis.selectOne("Member.findByUserId", id);
-	}
+    @Autowired
+    private SqlSession mybatis;
 
+    public MemberDTO findByUserId(String userId) {
+        return mybatis.selectOne("Member.findByUserId", userId);
+    }
 }

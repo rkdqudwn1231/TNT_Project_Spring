@@ -3,28 +3,47 @@ package com.tnt.project.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.tnt.project.dao.AuthDAO;
+import com.tnt.project.dto.MemberDTO;
+import com.tnt.project.utils.Encrypt;
 
 @Service
 public class AuthService {
-	
-	public List<String> login(String id, String pw){
-		//dao 가서 로그인 처리 해주는 로직까지 있을거지만 예제니까 패스
-		//아이디랑 비번은 컨트롤러에서 있으니까 규칙만 반환
-		List<String> roles = new ArrayList();
-		
-		if(true) {
-			if(id.equals("admin")) {
-				roles.add("ADMIN");
-			}
-			else {
-				roles.add("MEMBER");
-			}
 
-			return roles;
-		}
-		else {
-			throw new RuntimeException();//예외를 만들어서 내보낸다.
-		}
-	}
+    @Autowired
+    private AuthDAO AuthDAO;
+
+    public List<String> login(String id, String rawPw) {
+   
+        // 1) userId로 DTO 가져오기
+        MemberDTO member = AuthDAO.findByUserId(id);
+      
+        if (member == null) {
+            throw new RuntimeException("아이디가 존재하지 않습니다.");
+        }
+
+        // 2) 입력 PW SHA-512 해싱
+        String encPw = Encrypt.encrypt(rawPw);
+        System.out.println(member.getPassword());
+
+        System.out.println(encPw);
+        // 3) 비밀번호 비교
+        if (!encPw.equals(member.getPassword())) {
+            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // 4) 권한 생성
+        List<String> roles = new ArrayList<>();
+
+        if ("admin".equals(member.getUserId())) {
+            roles.add("ADMIN");
+        } else {
+            roles.add("MEMBER");
+        }
+
+        return roles;
+    }
 }

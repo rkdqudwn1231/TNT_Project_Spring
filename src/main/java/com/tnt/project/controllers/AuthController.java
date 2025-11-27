@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,17 +25,29 @@ public class AuthController {
 	private JwtUtil jwt;
 	
 	@PostMapping("/login")
-	public ResponseEntity<Map<String,String>> login(@RequestBody Map<String,String> user){
-		//보통은 dto를 리턴하는데 그게 귀찮으니 맵으로 가겠다.
-		
+	public ResponseEntity<?> login(@RequestBody Map<String,String> user){
 		String id = user.get("id");
-		String pw = user.get("pw");
-		
-		List<String> roles = authService.login(id, pw); // 권한을 받았다는 것은 로그인에 성공했다는 것.
-		//이제 사용자 권한이랑 토큰을 만들어야하는데. jwt 가 필요함.
-		
-		String token = jwt.createToken(id, roles);
-		return ResponseEntity.ok(Map.of("token",token));
-	}
+        String pw = user.get("pw");
 
+		try {
+			// 로그인 처리 + ROLE 반환
+			List<String> roles = authService.login(id, pw);
+			// JWT 생성
+			String token = jwt.createToken(id, roles);
+
+			return ResponseEntity.ok(Map.of(
+				"token", token,
+				"id", id,
+				"roles", String.join(",", roles)
+				
+			));
+		
+		} catch (Exception e) {
+			// 로그인 실패(아이디 또는 비번 불일치)
+			e.printStackTrace();
+			return ResponseEntity
+					.status(HttpStatus.UNAUTHORIZED)
+					.body(Map.of("error", e.getMessage()));
+		}
+	}
 }
