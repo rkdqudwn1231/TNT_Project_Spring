@@ -29,11 +29,11 @@ public class ChatbotDAO {
 	
 	public void insertSummary(String userId, String summary) {	
 		
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("userId", userId);
-		map.put("summary", summary);
-		
-	    mybatis.insert("Chatbot.insertSummary", map);
+//		Map<String,String> map = new HashMap<String,String>();
+//		map.put("userId", userId);
+//		map.put("summary", summary);
+//		
+//	    mybatis.insert("Chatbot.insertSummary", map);
 	}
 	
 	public int removeHistory(String userId) {
