@@ -16,6 +16,7 @@ public class ClosetDAO {
     private SqlSessionTemplate mybatis;
 
     public int insertCloset(ClosetDTO closetDTO) {
+    	
     	return mybatis.insert("Closet.insertCloset", closetDTO);
     }
 

@@ -6,10 +6,10 @@
 <mapper namespace="FitRoom">
 
     <insert id="insertFitRoom" parameterType="com.tnt.project.dto.FitRoomDTO">
-        INSERT INTO FITROOM (
-            SEQ, MEMBER_ID, MODELIMAGEURL, MODELNAME,
-            CLOTHTYPE, UPPERIMAGEURL, UPPERNAME,
-            LOWERIMAGEURL, LOWERNAME, CATEGORY, RESULTURL
+        INSERT INTO fitroom (
+            seq, member_id, model_image_url, model_name,
+            cloth_type, upper_image_url, upper_name,
+            lower_image_url, lower_name, category, result_url
         ) VALUES (
             FITROOM_SEQ.NEXTVAL,
             #{memberId, jdbcType=VARCHAR},
@@ -32,7 +32,7 @@
     <select id="selectByMember" resultType="com.tnt.project.dto.FitRoomDTO">
         SELECT * FROM FITROOM 
         WHERE MEMBER_ID = #{memberId, jdbcType=VARCHAR}
-        ORDER BY STARTDATE DESC
+        ORDER BY START_DATE DESC
     </select>
 
    

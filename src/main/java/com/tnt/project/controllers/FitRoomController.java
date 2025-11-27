@@ -82,9 +82,18 @@
 		        @RequestParam(value = "lower_cloth_image", required = false) MultipartFile lowerImage,
 		        @RequestParam("memberId") String memberId,
 		        @RequestParam("ClosetCategory") String ClosetCategory,
-		        @RequestParam("sex") String modelSex
+		        @RequestParam("sex") String modelSex,
+		        @RequestParam(value="upperClothColorR", required=false) Integer upperClothColorR,
+		        @RequestParam(value="upperClothColorG", required=false) Integer upperClothColorG,
+		        @RequestParam(value="upperClothColorB", required=false) Integer upperClothColorB,
+		        @RequestParam(value="lowerClothColorR", required=false) Integer lowerClothColorR,
+		        @RequestParam(value="lowerClothColorG", required=false) Integer lowerClothColorG,
+		        @RequestParam(value="lowerClothColorB", required=false) Integer lowerClothColorB
+		
 		) {
-		    fitRoomService.saveToDB(taskId, clothType, modelImage, clothImage, lowerImage , memberId,ClosetCategory,modelSex);
+		    fitRoomService.saveToDB(taskId, clothType, modelImage, clothImage, lowerImage , memberId,ClosetCategory,modelSex
+		    		,upperClothColorR,upperClothColorG,upperClothColorB
+		    		,lowerClothColorR,lowerClothColorG,lowerClothColorB);
 		    return ResponseEntity.ok("saved");
 		}
 	
