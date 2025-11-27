@@ -277,8 +277,9 @@ public class FitRoomService {
 
 	// 이미지 GCP + DB 저장
 	public void saveToDB(String taskId, String clothType, MultipartFile modelImage,
-			MultipartFile clothImage, MultipartFile lowerImage, String memberId, 
-			String closetCategory, String modelSex) {
+			MultipartFile clothImage, MultipartFile lowerImage, String memberId, String closetCategory, String modelSex, 
+			Integer upperClothColorR, Integer upperClothColorG, Integer upperClothColorB, 
+			Integer lowerClothColorR, Integer lowerClothColorG, Integer lowerClothColorB) {
 
 		try {
 			// ================== 1️⃣ 모델 이미지 GCP 업로드 ==================
@@ -345,14 +346,51 @@ public class FitRoomService {
 
 			// ================== 6️⃣ Closet 테이블 저장 ==================
 			ClosetDTO closetDTO = new ClosetDTO();
-			closetDTO.setMemberId(memberId);
-			closetDTO.setClothType(clothType);
-			closetDTO.setCategory(closetCategory);
-			if (clothImage != null) closetDTO.setUpperImageUrl(fitRoomDTO.getUpperImageUrl());
-			if (clothImage != null) closetDTO.setUpperName(clothImage.getOriginalFilename());
-			if (lowerImage != null) closetDTO.setLowerImageUrl(fitRoomDTO.getLowerImageUrl());
-			if (lowerImage != null) closetDTO.setLowerName(lowerImage.getOriginalFilename());
-			cdao.insertCloset(closetDTO);
+
+			if ("combo".equalsIgnoreCase(clothType)) {
+			    // 상의 저장
+			    if (clothImage != null) {
+			        ClosetDTO upperDTO = new ClosetDTO();
+			        upperDTO.setMemberId(memberId);
+			        upperDTO.setClothType("upper");
+			        upperDTO.setCategory(closetCategory);
+			        upperDTO.setUpperImageUrl(fitRoomDTO.getUpperImageUrl());
+			        upperDTO.setUpperName(clothImage.getOriginalFilename());
+			        upperDTO.setUpperColorR(upperClothColorR);
+			        upperDTO.setUpperColorG(upperClothColorG);
+			        upperDTO.setUpperColorB(upperClothColorB);
+			        cdao.insertCloset(upperDTO);
+			    }
+
+			    // 하의 저장
+			    if (lowerImage != null) {
+			        ClosetDTO lowerDTO = new ClosetDTO();
+			        lowerDTO.setMemberId(memberId);
+			        lowerDTO.setClothType("lower");
+			        lowerDTO.setCategory(closetCategory);
+			        lowerDTO.setLowerImageUrl(fitRoomDTO.getLowerImageUrl());
+			        lowerDTO.setLowerName(lowerImage.getOriginalFilename());
+			        lowerDTO.setLowerColorR(lowerClothColorR);
+			        lowerDTO.setLowerColorG(lowerClothColorG);
+			        lowerDTO.setLowerColorB(lowerClothColorB);
+			        cdao.insertCloset(lowerDTO);
+			    }
+			} else {
+			    // 단일 옷 처리
+			    ClosetDTO singleDTO = new ClosetDTO();
+			    singleDTO.setMemberId(memberId);
+			    singleDTO.setClothType(clothType);
+			    singleDTO.setCategory(closetCategory);
+			    if (clothImage != null) {
+			        singleDTO.setUpperImageUrl(fitRoomDTO.getUpperImageUrl());
+			        singleDTO.setUpperName(clothImage.getOriginalFilename());
+			        singleDTO.setUpperColorR(upperClothColorR);
+			        singleDTO.setUpperColorG(upperClothColorG);
+			        singleDTO.setUpperColorB(upperClothColorB);
+			        cdao.insertCloset(singleDTO);
+			    }
+			}
+			
 
 		} catch (IOException e) {
 			throw new RuntimeException("이미지 처리 오류", e);

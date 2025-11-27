@@ -2,17 +2,16 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-<mapper namespace="Model">
+  <mapper namespace="Model">
 
     <insert id="insertModel" parameterType="com.tnt.project.dto.ModelDTO">
         INSERT INTO MODEL (
             SEQ,
             MEMBER_ID,
-            MODELURL,
-            MODELNAME,
+            MODEL_URL,
+            MODEL_NAME,
             SEX,
-            SAVEDATE
+            SAVE_DATE
         ) VALUES (
             MODEL_SEQ.NEXTVAL,
             #{memberId, jdbcType=VARCHAR},
@@ -23,28 +22,28 @@
         )
     </insert>
 
+    <resultMap id="modelResultMap" type="com.tnt.project.dto.ModelDTO">
+        <id property="seq" column="SEQ"/>
+        <result property="memberId" column="MEMBER_ID"/>
+        <result property="modelUrl" column="MODEL_URL"/>
+        <result property="modelName" column="MODEL_NAME"/>
+        <result property="sex" column="SEX"/>
+        <result property="saveDate" column="SAVE_DATE"/>
+    </resultMap>
 
-	<select id="getModelList" resultType="com.tnt.project.dto.ModelDTO">
-    
-    select * from model 
-    
+    <select id="getModelList" resultMap="modelResultMap">
+        select * from model
     </select>
-    
+
     <delete id="deleteModel" parameterType="int">
-    
-    delete from model where seq = #{seq}
-    
+        delete from model where seq = #{seq}
     </delete>
-    
+
     <update id="editModel" parameterType="map">
-    
-    update model 
-    set modelname = #{name} , 
-    sex = #{sex} 
-    where seq = #{seq}
-    
+        update model
+        set model_name = #{name},
+            sex = #{sex}
+        where seq = #{seq}
     </update>
-    
-    
-    
+
 </mapper>

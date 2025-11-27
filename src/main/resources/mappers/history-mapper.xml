@@ -7,18 +7,18 @@
 <mapper namespace="History">
 
     <insert id="insertHistory" parameterType="com.tnt.project.dto.HistoryDTO">
-        INSERT INTO HISTORY (
-            SEQ,
-            MEMBER_ID,
-            RESULTURL,
-            NAME,
-            UPPERIMAGEURL,
-            UPPERNAME,
-            LOWERIMAGEURL,
-            LOWERNAME,
-            SAVEDATE
+        INSERT INTO history (
+            seq,
+            member_id,
+            result_url,
+            name,
+            upper_image_url,
+            upper_name,
+            lower_image_url,
+            lower_name,
+            save_date
         ) VALUES (
-            HISTORY_SEQ.NEXTVAL,
+            history_seq.NEXTVAL,
             #{memberId, jdbcType=VARCHAR},
             #{resultUrl, jdbcType=CLOB},
             #{name, jdbcType=VARCHAR},
@@ -29,21 +29,29 @@
             SYSDATE
         )
     </insert>
-    
-    <select id="getHistoryList" resultType="com.tnt.project.dto.HistoryDTO">
-    
-    select * from history 
-    
+
+    <resultMap id="historyResultMap" type="com.tnt.project.dto.HistoryDTO">
+        <id property="seq" column="SEQ"/>
+        <result property="memberId" column="MEMBER_ID"/>
+        <result property="resultUrl" column="RESULT_URL"/>
+        <result property="name" column="NAME"/>
+        <result property="upperImageUrl" column="UPPER_IMAGE_URL"/>
+        <result property="upperName" column="UPPER_NAME"/>
+        <result property="lowerImageUrl" column="LOWER_IMAGE_URL"/>
+        <result property="lowerName" column="LOWER_NAME"/>
+        <result property="saveDate" column="SAVE_DATE"/>
+    </resultMap>
+
+    <select id="getHistoryList" resultMap="historyResultMap">
+        select * from history
     </select>
-    
+
+    <select id="getHistoryBySeq" parameterType="int" resultMap="historyResultMap">
+        select * from history where seq = #{seq}
+    </select>
+
     <delete id="deleteHistory" parameterType="int">
-    
-    delete from history where seq = #{seq}
-    
+        delete from history where seq = #{seq}
     </delete>
-    
-    <select id="getHistoryBySeq"  parameterType="int" resultType="com.tnt.project.dto.HistoryDTO">
-    select * from history where seq = #{seq}
-    </select>
 
 </mapper>

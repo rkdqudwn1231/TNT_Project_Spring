@@ -5,35 +5,66 @@
   
 <mapper namespace="Closet">
 
-    <insert id="insertCloset" parameterType="com.tnt.project.dto.ClosetDTO">
-        INSERT INTO CLOSET (
-            SEQ,
-            MEMBER_ID,
-            CLOTHTYPE,
-            UPPERIMAGEURL,
-            UPPERNAME,
-            LOWERIMAGEURL,
-            LOWERNAME,
-            CATEGORY,
-            SAVEDATE
-        ) VALUES (
-            CLOSET_SEQ.NEXTVAL,
-            #{memberId, jdbcType=VARCHAR},
-            #{clothType, jdbcType=VARCHAR},
-            #{upperImageUrl, jdbcType=CLOB},
-            #{upperName, jdbcType=VARCHAR},
-            #{lowerImageUrl, jdbcType=CLOB},
-            #{lowerName, jdbcType=VARCHAR},
-            #{category, jdbcType=VARCHAR},
-            SYSDATE
-        )
-    </insert>
+<insert id="insertCloset" parameterType="com.tnt.project.dto.ClosetDTO">
+    INSERT INTO CLOSET (
+        SEQ,
+        MEMBER_ID,
+        CLOTH_TYPE,
+        UPPER_IMAGE_URL,
+        UPPER_NAME,
+        UPPER_COLOR_R,
+        UPPER_COLOR_G,
+        UPPER_COLOR_B,
+        LOWER_IMAGE_URL,
+        LOWER_NAME,
+        LOWER_COLOR_R,
+        LOWER_COLOR_G,
+        LOWER_COLOR_B,	
+        CATEGORY,
+        SAVE_DATE
+    ) VALUES (
+        CLOSET_SEQ.NEXTVAL,
+        #{memberId, jdbcType=VARCHAR},
+        #{clothType, jdbcType=VARCHAR},
+        #{upperImageUrl, jdbcType=CLOB},
+        #{upperName, jdbcType=VARCHAR},
+        #{upperColorR, jdbcType=INTEGER},
+        #{upperColorG, jdbcType=INTEGER},
+        #{upperColorB, jdbcType=INTEGER},
+        #{lowerImageUrl, jdbcType=CLOB},
+        #{lowerName, jdbcType=VARCHAR},
+        #{lowerColorR, jdbcType=INTEGER},
+        #{lowerColorG, jdbcType=INTEGER},
+        #{lowerColorB, jdbcType=INTEGER},
+        #{category, jdbcType=VARCHAR},
+        SYSDATE
+    )
+</insert>
 
-   <select id="getClosetList" resultType="com.tnt.project.dto.ClosetDTO">
-    
-    select * from closet 
-    
-    </select>
+
+
+ <resultMap id="closetResultMap" type="com.tnt.project.dto.ClosetDTO">
+    <id property="seq" column="SEQ"/>
+    <result property="memberId" column="MEMBER_ID"/>
+    <result property="clothType" column="CLOTH_TYPE"/>
+    <result property="upperImageUrl" column="UPPER_IMAGE_URL"/>
+    <result property="upperName" column="UPPER_NAME"/>
+    <result property="upperColorR" column="UPPER_COLOR_R"/>
+    <result property="upperColorG" column="UPPER_COLOR_G"/>
+    <result property="upperColorB" column="UPPER_COLOR_B"/>
+    <result property="lowerImageUrl" column="LOWER_IMAGE_URL"/>
+    <result property="lowerName" column="LOWER_NAME"/>
+    <result property="lowerColorR" column="LOWER_COLOR_R"/>
+    <result property="lowerColorG" column="LOWER_COLOR_G"/>
+    <result property="lowerColorB" column="LOWER_COLOR_B"/>
+    <result property="category" column="CATEGORY"/>
+    <result property="saveDate" column="SAVE_DATE"/>
+</resultMap>
+
+<select id="getClosetList" resultMap="closetResultMap">
+    select * from closet
+</select>
+
     
 
     
@@ -49,23 +80,24 @@
     <set>
         <choose>
             <when test="type eq 'upper'">
-                uppername = #{name},
-                upperimageurl = #{url},
-                lowername = null,
-                lowerimageurl = null
+                upper_name = #{name},
+                upper_image_url = #{url},
+                lower_name = null,
+                lower_image_url = null
             </when>
             
             <otherwise>
-                lowername = #{name},
-                lowerimageurl = #{url},
-                uppername = null,
-                upperimageurl = null
+                lower_name = #{name},
+                lower_image_url = #{url},
+                upper_name = null,
+                upper_image_url = null
             </otherwise>
         </choose>
-        ,clothtype = #{type} , category = #{category}
+        ,cloth_type = #{type},
+        category = #{category}
     </set>
     where seq = #{seq}
-	</update>
+</update>
 
 
     
