@@ -37,7 +37,7 @@ public class ChatbotDAO {
 	}
 	
 	public int removeHistory(String userId) {
-		return mybatis.insert("Chatbot.removeHistory", userId); 
+		return mybatis.delete("Chatbot.removeHistory", userId); 
 	}
 	
 	public void removeOldHistory(String userId) {
