@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="BodySurvey">
+
+<insert id="insertSurvey">
+    INSERT INTO BODY_SURVEY (
+        seq,
+        MEMBER_ID,
+        GENDER,
+        ANSWER_Q1,
+        ANSWER_Q2,
+        ANSWER_Q3,
+        ANSWER_Q4,
+        ANSWER_Q5,
+        CREATED_AT
+    ) VALUES (
+        BODY_SURVEY_SEQ.NEXTVAL,
+        #{member_id, jdbcType=VARCHAR},
+        #{gender, jdbcType=VARCHAR},
+        #{answer_q1, jdbcType=VARCHAR},
+        #{answer_q2, jdbcType=VARCHAR},
+        #{answer_q3, jdbcType=VARCHAR},
+        #{answer_q4, jdbcType=VARCHAR},
+        #{answer_q5, jdbcType=VARCHAR},
+        SYSDATE
+    )
+</insert>
+
+    <!-- 체형 타입 + 성별로 스타일 추천 조회 -->
+<select id="findBodyTypeInfo" resultType="map">
+    SELECT
+        SUMMARY,
+        TOP_TIPS,
+        BOTTOM_TIPS,
+        OUTER_TIPS,
+        PATTERN_TIPS
+    FROM BODY_TYPE
+    WHERE BODY_TYPE = #{body_type, jdbcType=VARCHAR}
+      AND GENDER = #{gender, jdbcType=VARCHAR}
+</select>
+
+</mapper>
