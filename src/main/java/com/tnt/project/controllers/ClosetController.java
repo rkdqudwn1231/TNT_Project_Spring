@@ -28,17 +28,20 @@ public class ClosetController {
 	@PostMapping("/insert")
 	public void insertCloset(@RequestParam("memberId") String memberId, 
 			@RequestParam("category") String category,
+			@RequestParam("lowerCategory") String lowerCategory,
 			@RequestParam("clothType") String clothType,
 			@RequestParam(value = "cloth_image", required = false) MultipartFile cloth_image,
 			@RequestParam(value = "lower_cloth_image", required = false) MultipartFile lower_cloth_image,
-			 @RequestParam(value="upperClothColorR", required=false) Integer upperClothColorR,
-		        @RequestParam(value="upperClothColorG", required=false) Integer upperClothColorG,
-		        @RequestParam(value="upperClothColorB", required=false) Integer upperClothColorB,
-		        @RequestParam(value="lowerClothColorR", required=false) Integer lowerClothColorR,
-		        @RequestParam(value="lowerClothColorG", required=false) Integer lowerClothColorG,
-		        @RequestParam(value="lowerClothColorB", required=false) Integer lowerClothColorB) {
+			@RequestParam(value="upperClothColorR", required=false) Integer upperClothColorR,
+		    @RequestParam(value="upperClothColorG", required=false) Integer upperClothColorG,
+		    @RequestParam(value="upperClothColorB", required=false) Integer upperClothColorB,
+		    @RequestParam(value="lowerClothColorR", required=false) Integer lowerClothColorR,
+		    @RequestParam(value="lowerClothColorG", required=false) Integer lowerClothColorG,
+		    @RequestParam(value="lowerClothColorB", required=false) Integer lowerClothColorB
+		        ) {
 
-		closetService.insertCloset(memberId,category,clothType,cloth_image,lower_cloth_image
+		
+		closetService.insertCloset(memberId,category,lowerCategory,clothType,cloth_image,lower_cloth_image
 				,upperClothColorR,upperClothColorG,upperClothColorB
 	    		,lowerClothColorR,lowerClothColorG,lowerClothColorB);
 	

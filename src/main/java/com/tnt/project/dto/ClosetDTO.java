@@ -17,18 +17,14 @@ public class ClosetDTO {
     private Integer lowerColorR;
     private Integer lowerColorG;
     private Integer lowerColorB;
-	private String category;
-	private Date saveDate;
-	
-	
-	
-	
-	
+    
+    
 	public ClosetDTO() {}
-	
+    
 	public ClosetDTO(int seq, String memberId, String clothType, String upperImageUrl, String upperName,
 			Integer upperColorR, Integer upperColorG, Integer upperColorB, String lowerImageUrl, String lowerName,
-			Integer lowerColorR, Integer lowerColorG, Integer lowerColorB, String category, Date saveDate) {
+			Integer lowerColorR, Integer lowerColorG, Integer lowerColorB, String category, String lowerCategory,
+			Date saveDate) {
 		super();
 		this.seq = seq;
 		this.memberId = memberId;
@@ -44,9 +40,12 @@ public class ClosetDTO {
 		this.lowerColorG = lowerColorG;
 		this.lowerColorB = lowerColorB;
 		this.category = category;
+		this.lowerCategory = lowerCategory;
 		this.saveDate = saveDate;
 	}
-	
+	private String category;
+	private String lowerCategory;
+	private Date saveDate;
 	
 	
 	
@@ -134,6 +133,12 @@ public class ClosetDTO {
 	public void setCategory(String category) {
 		this.category = category;
 	}
+	public String getLowerCategory() {
+		return lowerCategory;
+	}
+	public void setLowerCategory(String lowerCategory) {
+		this.lowerCategory = lowerCategory;
+	}
 	public Date getSaveDate() {
 		return saveDate;
 	}
@@ -142,7 +147,10 @@ public class ClosetDTO {
 	}
 	
 	
- 
+	
+	
+	
+	
 	
 	
 	

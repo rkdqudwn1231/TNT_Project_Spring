@@ -14,17 +14,16 @@ public class FitRoomDTO {
     private String lowerImageUrl;
     private String lowerName;
     private String category;
+    private String lowerCategory;
     private String resultUrl;
-    private String taskId;
-  
     
     public FitRoomDTO() {}
     
     public FitRoomDTO(int seq, String memberId, String modelImageUrl, String modelName, String clothType,
 			String upperImageUrl, String upperName, String lowerImageUrl, String lowerName, String category,
-			String resultUrl, Date startDate) {
+			String lowerCategory, String resultUrl, String taskId) {
 		super();
-		this.seq = seq;	
+		this.seq = seq;
 		this.memberId = memberId;
 		this.modelImageUrl = modelImageUrl;
 		this.modelName = modelName;
@@ -34,10 +33,11 @@ public class FitRoomDTO {
 		this.lowerImageUrl = lowerImageUrl;
 		this.lowerName = lowerName;
 		this.category = category;
+		this.lowerCategory = lowerCategory;
 		this.resultUrl = resultUrl;
-		this.startDate = startDate;
+		this.taskId = taskId;
 	}
-    
+	private String taskId;
     
     
     
@@ -101,28 +101,28 @@ public class FitRoomDTO {
 	public void setCategory(String category) {
 		this.category = category;
 	}
+	public String getLowerCategory() {
+		return lowerCategory;
+	}
+	public void setLowerCategory(String lowerCategory) {
+		this.lowerCategory = lowerCategory;
+	}
 	public String getResultUrl() {
 		return resultUrl;
 	}
 	public void setResultUrl(String resultUrl) {
 		this.resultUrl = resultUrl;
 	}
-	public Date getStartDate() {
-		return startDate;
-	}
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-	private Date startDate;
-
-
-//
-	public void setTaskId(String taskId) {
-	    this.taskId = taskId;
-	}
-
 	public String getTaskId() {
-	    return taskId;
+		return taskId;
 	}
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
+	}
+  
+    
+
+    
+    
 }
 

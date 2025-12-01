@@ -21,6 +21,7 @@
         LOWER_COLOR_G,
         LOWER_COLOR_B,	
         CATEGORY,
+        lower_category,
         SAVE_DATE
     ) VALUES (
         CLOSET_SEQ.NEXTVAL,
@@ -37,6 +38,7 @@
         #{lowerColorG, jdbcType=INTEGER},
         #{lowerColorB, jdbcType=INTEGER},
         #{category, jdbcType=VARCHAR},
+        #{lowerCategory, jdbcType=VARCHAR},
         SYSDATE
     )
 </insert>
@@ -58,6 +60,7 @@
     <result property="lowerColorG" column="LOWER_COLOR_G"/>
     <result property="lowerColorB" column="LOWER_COLOR_B"/>
     <result property="category" column="CATEGORY"/>
+    <result property="lowerCategory" column="LOWER_CATEGORY"/>
     <result property="saveDate" column="SAVE_DATE"/>
 </resultMap>
 
@@ -83,18 +86,21 @@
                 upper_name = #{name},
                 upper_image_url = #{url},
                 lower_name = null,
-                lower_image_url = null
+                lower_image_url = null,
+                lower_category = null,
+                category = #{category}
             </when>
             
             <otherwise>
                 lower_name = #{name},
                 lower_image_url = #{url},
+                lower_category = #{category},
                 upper_name = null,
-                upper_image_url = null
+                upper_image_url = null,
+                category = null
             </otherwise>
         </choose>
-        ,cloth_type = #{type},
-        category = #{category}
+        , cloth_type = #{type}
     </set>
     where seq = #{seq}
 </update>

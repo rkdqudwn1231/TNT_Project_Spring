@@ -20,14 +20,13 @@ public class ClosetService {
 	private FileService Fserv;
 	
 	
-	public int insertCloset(String memberId, String category, String clothType, MultipartFile cloth_image,
+	public int insertCloset(String memberId, String category, String lowerCategory,String clothType, MultipartFile cloth_image,
 			MultipartFile lower_cloth_image,
 			Integer upperClothColorR, Integer upperClothColorG, Integer upperClothColorB, 
 			Integer lowerClothColorR, Integer lowerClothColorG, Integer lowerClothColorB) {
 		
 		ClosetDTO dto = new ClosetDTO();
 		dto.setMemberId(memberId);
-		dto.setCategory(category);
 		dto.setClothType(clothType);
 		
 		
@@ -46,6 +45,9 @@ public class ClosetService {
 		        dto.setUpperColorR(upperClothColorR);
 		        dto.setUpperColorG(upperClothColorG);
 		        dto.setUpperColorB(upperClothColorB);
+		        
+		        //카테고리
+		        dto.setCategory(category);
 		    }
 
 		    // 하의 이미지 업로드
@@ -62,6 +64,9 @@ public class ClosetService {
 		        dto.setLowerColorR(lowerClothColorR);
 		        dto.setLowerColorG(lowerClothColorG);
 		        dto.setLowerColorB(lowerClothColorB);
+		        
+		        //카테고리
+		    	dto.setLowerCategory(lowerCategory);
 		    }
 
 		} catch(Exception e) {
