@@ -46,32 +46,7 @@
 		    return ResponseEntity.ok(result);
 		}
 	
-		
-		//기존 url 그대로 받아오는 wear 11.19
-	//	@PostMapping("/wear")
-	//	public ResponseEntity<Map<String, Object>> createTryOn(
-	//	        @RequestParam("model_image") MultipartFile modelImage,
-	//	        @RequestParam(value = "cloth_image", required = false) MultipartFile upperImage,
-	//	        @RequestParam(value = "lower_cloth_image", required = false) MultipartFile lowerImage,
-	//	        @RequestParam("cloth_type") String clothType) {
-	//		
-	//		boolean hdMode = false; // HD 모드 강제 OFF
-	//
-	//
-	//	    String resultImageUrl = fitRoomService.createTryOnAndGetResult(
-	//	        modelImage, upperImage, lowerImage, clothType);
-	//
-	//	
-	//	    Map<String, Object> result = Map.of(
-	//	        "status", "ok",
-	//	        "imageUrl", resultImageUrl
-	//	        
-	//	    );
-	//
-	//	    return ResponseEntity.ok(result);
-	//	}
-	
-		
+
 	
 		@PostMapping("/save")
 		public ResponseEntity<?> saveTryOnResult(
