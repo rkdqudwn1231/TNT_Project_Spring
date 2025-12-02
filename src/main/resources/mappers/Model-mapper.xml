@@ -31,8 +31,8 @@
         <result property="saveDate" column="SAVE_DATE"/>
     </resultMap>
 
-    <select id="getModelList" resultMap="modelResultMap">
-        select * from model
+    <select id="getModelList" parameterType="string" resultMap="modelResultMap">
+        select * from model where member_id = #{memberId,jdbcType=VARCHAR}
     </select>
 
     <delete id="deleteModel" parameterType="int">

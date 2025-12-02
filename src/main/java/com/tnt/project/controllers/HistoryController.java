@@ -31,11 +31,11 @@ public class HistoryController {
 	private FileService fileService;
 
 	@GetMapping("/list")
-	public List<HistoryDTO> getHistoryList() {
+	public List<HistoryDTO> getHistoryList(@RequestParam String memberId) {
 
 		HistoryDTO dto = new HistoryDTO();
 
-		List<HistoryDTO> list = historyService.getHistoryList();
+		List<HistoryDTO> list = historyService.getHistoryList(memberId);
 
 		return list;
 

@@ -18,9 +18,9 @@ public class HistoryDAO {
 	    	return mybatis.insert("History.insertHistory", historyDTO);
 	    }
 
-		public List<HistoryDTO> getHistoryList() {
+		public List<HistoryDTO> getHistoryList(String memberId) {
 			
-			return mybatis.selectList("History.getHistoryList");
+			return mybatis.selectList("History.getHistoryList", memberId);
 		}
 
 		public int deleteHistory(int seq) {

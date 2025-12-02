@@ -64,8 +64,8 @@
     <result property="saveDate" column="SAVE_DATE"/>
 </resultMap>
 
-<select id="getClosetList" resultMap="closetResultMap">
-    select * from closet
+<select id="getClosetList" parameterType="string" resultMap="closetResultMap">
+    select * from closet where member_id = #{memberId,jdbcType=VARCHAR}
 </select>
 
     

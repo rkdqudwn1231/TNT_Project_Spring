@@ -28,7 +28,7 @@ public class ClosetService {
 		ClosetDTO dto = new ClosetDTO();
 		dto.setMemberId(memberId);
 		dto.setClothType(clothType);
-		
+		System.out.println(memberId);
 		
 		try {
 		    // 상의 이미지 업로드
@@ -81,9 +81,9 @@ public class ClosetService {
 	
 	
 	
-	public List<ClosetDTO> getClosetList() {
+	public List<ClosetDTO> getClosetList(String memberId) {
 
-		return closetdao.getClosetList();
+		return closetdao.getClosetList(memberId);
 
 
 	}

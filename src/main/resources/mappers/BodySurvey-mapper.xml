@@ -36,8 +36,8 @@
         TOP_TIPS,
         BOTTOM_TIPS,
         OUTER_TIPS,
-        PATTERN_TIPS
-    FROM BODY_TYPE
+        PATTERN_TIPS,
+        IMAGE_URL  FROM BODY_TYPE
     WHERE BODY_TYPE = #{body_type, jdbcType=VARCHAR}
       AND GENDER = #{gender, jdbcType=VARCHAR}
 </select>

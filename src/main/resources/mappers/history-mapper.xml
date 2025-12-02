@@ -42,8 +42,8 @@
         <result property="saveDate" column="SAVE_DATE"/>
     </resultMap>
 
-    <select id="getHistoryList" resultMap="historyResultMap">
-        select * from history
+    <select id="getHistoryList"  parameterType="string" resultMap="historyResultMap">
+        select * from history where member_id = #{memberId,jdbcType=VARCHAR}
     </select>
 
     <select id="getHistoryBySeq" parameterType="int" resultMap="historyResultMap">

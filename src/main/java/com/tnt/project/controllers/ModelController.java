@@ -33,11 +33,11 @@ public class ModelController {
 	
 	
 	@GetMapping("/list")
-	public List<ModelDTO> getModelList() {
+	public List<ModelDTO> getModelList(@RequestParam String memberId) {
 		
 		ModelDTO dto = new ModelDTO();
 				
-		List<ModelDTO> list = modelService.getModelList();
+		List<ModelDTO> list = modelService.getModelList(memberId);
 		
 		return list;
 				

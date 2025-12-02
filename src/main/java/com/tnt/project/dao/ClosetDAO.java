@@ -20,9 +20,9 @@ public class ClosetDAO {
     	return mybatis.insert("Closet.insertCloset", closetDTO);
     }
 
-	public List<ClosetDTO> getClosetList() {
+	public List<ClosetDTO> getClosetList(String memberId) {
 	
-		return mybatis.selectList("Closet.getClosetList");
+		return mybatis.selectList("Closet.getClosetList" , memberId);
 	}
 
 	public int deleteCloth(Object seq) {
