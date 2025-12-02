@@ -277,7 +277,7 @@ public class FitRoomService {
 
 	// 이미지 GCP + DB 저장
 	public void saveToDB(String taskId, String clothType, MultipartFile modelImage,
-			MultipartFile clothImage, MultipartFile lowerImage, String memberId, String closetCategory, String modelSex, 
+			MultipartFile clothImage, MultipartFile lowerImage, String memberId, String closetCategory,String lowerCategory, String modelSex, 
 			Integer upperClothColorR, Integer upperClothColorG, Integer upperClothColorB, 
 			Integer lowerClothColorR, Integer lowerClothColorG, Integer lowerClothColorB) {
 
@@ -367,7 +367,7 @@ public class FitRoomService {
 			        ClosetDTO lowerDTO = new ClosetDTO();
 			        lowerDTO.setMemberId(memberId);
 			        lowerDTO.setClothType("lower");
-			        lowerDTO.setCategory(closetCategory);
+			        lowerDTO.setLowerCategory(lowerCategory);
 			        lowerDTO.setLowerImageUrl(fitRoomDTO.getLowerImageUrl());
 			        lowerDTO.setLowerName(lowerImage.getOriginalFilename());
 			        lowerDTO.setLowerColorR(lowerClothColorR);
