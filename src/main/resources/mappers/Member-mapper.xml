@@ -10,7 +10,45 @@
         resultType="com.tnt.project.dto.MemberDTO">
     SELECT *
     FROM member
-    WHERE user_id = #{userId}
+    WHERE id = #{id}
 </select>
+
+<!-- 회원가입 insert -->
+    <insert id="insertMember" parameterType="com.tnt.project.dto.MemberDTO">
+        INSERT INTO member(
+            user_id,
+            password,
+            nickname,
+            name,
+            gender,
+            birth,
+            phone,
+            email,
+            profile_image_uuid,
+            profile_image_original,
+            profile_image_url,
+            personal_color,
+            body_shape,
+            created_at,
+            updated_at
+        )
+        VALUES(
+            #{userId},
+            #{password},
+            #{nickname},
+            #{name},
+            #{gender},
+            #{birth},
+            #{phone},
+            #{email},
+            #{profileImageUuid},
+            #{profileImageOriginal},
+            #{profileImageUrl},
+            #{personalColor},
+            #{bodyShape},
+            SYSTIMESTAMP,
+            SYSTIMESTAMP
+        )
+    </insert>
 
 </mapper>

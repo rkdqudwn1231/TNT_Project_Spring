@@ -15,4 +15,9 @@ public class MemberDAO {
     public MemberDTO findByUserId(String userId) {
         return mybatis.selectOne("Member.findByUserId", userId);
     }
+    
+    // 회원 추가 
+    public void insertMember(MemberDTO member) {
+        mybatis.insert("Member.insertMember", member);
+    }
 }

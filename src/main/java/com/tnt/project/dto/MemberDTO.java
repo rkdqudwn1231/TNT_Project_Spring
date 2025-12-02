@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 public class MemberDTO {
 
-    private String userId;                      // 로그인 아이디
+    private String id;                      // 로그인 아이디
     private String password;                    // 비밀번호 해시
     private String nickname;                    // 닉네임
     private String name;                        // 실명
@@ -29,11 +29,11 @@ public class MemberDTO {
     public MemberDTO() {}
 
     // Getter / Setter
-    public String getUserId() {
-        return userId;
+    public String getId() {
+        return id;
     }
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserId(String id) {
+        this.id = id;
     }
 
     public String getPassword() {

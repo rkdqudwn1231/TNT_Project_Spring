@@ -38,7 +38,7 @@ public class AuthService {
         // 4) 권한 생성
         List<String> roles = new ArrayList<>();
 
-        if ("admin".equals(member.getUserId())) {
+        if ("admin".equals(member.getId())) {
             roles.add("ADMIN");
         } else {
             roles.add("MEMBER");
