@@ -7,7 +7,7 @@
 
 <insert id="insertSurvey">
     INSERT INTO BODY_SURVEY (
-        seq,
+        SEQ,
         MEMBER_ID,
         GENDER,
         ANSWER_Q1,
@@ -15,7 +15,7 @@
         ANSWER_Q3,
         ANSWER_Q4,
         ANSWER_Q5,
-        CREATED_AT
+        BODY_TYPE,  CREATED_AT
     ) VALUES (
         BODY_SURVEY_SEQ.NEXTVAL,
         #{member_id, jdbcType=VARCHAR},
@@ -25,7 +25,7 @@
         #{answer_q3, jdbcType=VARCHAR},
         #{answer_q4, jdbcType=VARCHAR},
         #{answer_q5, jdbcType=VARCHAR},
-        SYSDATE
+        #{body_type, jdbcType=VARCHAR}, SYSDATE
     )
 </insert>
 

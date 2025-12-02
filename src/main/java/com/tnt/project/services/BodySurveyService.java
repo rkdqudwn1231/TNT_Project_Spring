@@ -19,7 +19,7 @@ public class BodySurveyService {
     public Map<String, Object> analyzeSurvey(BodySurveyDTO dto) {
 
         // 설문 기반 체형 계산
-        String bodyType = algorithm.evaluate(
+        String body_type = algorithm.evaluate(
                 dto.getAnswer_q1(),
                 dto.getAnswer_q2(),
                 dto.getAnswer_q3(),
@@ -27,20 +27,22 @@ public class BodySurveyService {
                 dto.getAnswer_q5()
         );
 
-        dto.setBody_type(bodyType);
+        dto.setBody_type(body_type);
 
         // DB 저장
         dao.insertSurvey(dto);
 
         // 체형 유형 상세 조회
         Map<String, String> param = new HashMap<>();
-        param.put("bodyType", bodyType);
+        param.put("body_type", body_type);
         param.put("gender", dto.getGender());
 
         Map<String, Object> res = dao.findBodyTypeInfo(param);
 
-        // 응답 데이터 구조
-        res.put("bodyType", bodyType);
+        if (res == null) {
+            res = new HashMap<>();
+        }
+        res.put("body_type", body_type);
 
         return res;
     }
