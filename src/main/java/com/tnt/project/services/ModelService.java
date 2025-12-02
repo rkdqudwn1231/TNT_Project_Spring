@@ -50,9 +50,9 @@ public class ModelService {
 	}
 
 	// 리스트
-	public List<ModelDTO> getModelList() {
+	public List<ModelDTO> getModelList(String memberId) {
 
-		return modeldao.getModelList();
+		return modeldao.getModelList(memberId);
 	}
 
 

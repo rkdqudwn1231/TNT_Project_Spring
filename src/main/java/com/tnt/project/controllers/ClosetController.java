@@ -48,11 +48,11 @@ public class ClosetController {
 	}
 
 	@GetMapping("/list")
-	public List<ClosetDTO> getClosetList() {
+	public List<ClosetDTO> getClosetList(@RequestParam String memberId) {
 
 		ClosetDTO dto = new ClosetDTO();
 
-		List<ClosetDTO> list = closetService.getClosetList();
+		List<ClosetDTO> list = closetService.getClosetList(memberId);
 
 		return list;
 

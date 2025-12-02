@@ -17,9 +17,9 @@ public class HistoryService {
 	
     private final RestTemplate restTemplate = new RestTemplate(); // 추가
 	
-	public List<HistoryDTO> getHistoryList() {
+	public List<HistoryDTO> getHistoryList(String memberId) {
 		
-		return historydao.getHistoryList();
+		return historydao.getHistoryList(memberId);
 	}
 	
 

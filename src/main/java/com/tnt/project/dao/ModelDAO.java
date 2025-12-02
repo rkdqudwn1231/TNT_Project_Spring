@@ -25,9 +25,9 @@ public class ModelDAO {
 		return mybatis.insert("Model.insertModel", modelDTO);
 	}
 
-	public List<ModelDTO> getModelList() {
+	public List<ModelDTO> getModelList(String memberId) {
 
-		return mybatis.selectList("Model.getModelList");
+		return mybatis.selectList("Model.getModelList",memberId);
 	}
 
 	public int deleteModel(int seq) {
