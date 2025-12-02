@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BoardTag">
+
+	<!-- 시퀀스 -->
+	<select id="getSeq" resultType="int">
+		SELECT board_tag_seq.NEXTVAL FROM dual
+	</select>
+
+	<!-- 태그 등록 -->
+	<insert id="insertTag">
+		<selectKey keyProperty="seq" resultType="int" order="BEFORE">
+			SELECT board_tag_seq.NEXTVAL FROM dual
+		</selectKey>
+
+		INSERT INTO board_tag (
+			seq,
+			board_id,
+			tag
+		) VALUES (
+			#{seq},
+			#{board_id},
+			#{tag}
+		)
+	</insert>
+
+	<!-- 특정 게시글의 태그 조회 -->
+	<select id="findByBoardId" resultType="com.tnt.project.dto.BoardTagDTO">
+		SELECT 
+			seq,
+			board_id,
+			tag
+		FROM board_tag
+		WHERE board_id = #{boardId}
+	</select>
+
+	<!-- 게시글 삭제 시 태그 삭제 -->
+	<delete id="deleteByBoardId">
+		DELETE FROM board_tag
+		WHERE board_id = #{boardId}
+	</delete>
+
+</mapper>
