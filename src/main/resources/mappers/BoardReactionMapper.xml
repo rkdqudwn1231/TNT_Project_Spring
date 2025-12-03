@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BoardReaction">
+
+    <!-- 특정 게시글 + 특정 회원의 반응 조회 -->
+    <select id="findByBoardAndMember" parameterType="map"
+            resultType="com.tnt.project.dto.BoardReactionDTO">
+        SELECT
+            seq,
+            board_seq,
+            member_id,
+            reaction
+        FROM board_reaction
+        WHERE board_seq = #{board_seq}
+          AND member_id = #{member_id}
+    </select>
+
+    <!-- 새로운 반응 INSERT (트리거로 seq 자동 증가) -->
+    <insert id="insert" parameterType="com.tnt.project.dto.BoardReactionDTO">
+        INSERT INTO board_reaction (
+            board_seq,
+            member_id,
+            reaction
+        ) VALUES (
+            #{board_seq},
+            #{member_id},
+            #{reaction}
+        )
+    </insert>
+
+    <!-- 반응 타입 변경 (LIKE ↔ DISLIKE) -->
+    <update id="updateReaction" parameterType="map">
+        UPDATE board_reaction
+        SET reaction = #{reaction}
+        WHERE board_seq = #{board_seq}
+          AND member_id = #{member_id}
+    </update>
+
+    <!-- 반응 삭제 (좋아요/싫어요 취소) -->
+    <delete id="delete" parameterType="map">
+        DELETE FROM board_reaction
+        WHERE board_seq = #{board_seq}
+          AND member_id = #{member_id}
+    </delete>
+
+</mapper>

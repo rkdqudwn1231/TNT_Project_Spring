@@ -1,6 +1,6 @@
 package com.tnt.project.controllers;
 
-import java.io.IOException;
+       import java.io.IOException;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +11,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tnt.project.dto.BoardDTO;
 import com.tnt.project.services.BoardService;
 import com.tnt.project.services.BoardTagService;
 import com.tnt.project.services.FileService;
+
+
 
 @RestController
 @RequestMapping("/board")
@@ -85,6 +90,75 @@ public class BoardController {
         return ResponseEntity.ok(boardService.findAll());
     }
 
-    
+    // 게시글 상세 조회
+    // React: GET /board/detail/{seq}
+    // - BoardDetail.jsx 에서 사용
+    // - 조회수(read_count)는 서비스에서 증가 처리
+    @GetMapping("/detail/{seq}")
+    public ResponseEntity<?> detail(@PathVariable("seq") int seq) {
+    	System.out.println("여기까지옴");
+        BoardDTO dto = boardService.getDetail(seq);
+        if (dto == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(dto);
+    }
+
+    // 게시글 삭제
+    // React: DELETE /board/delete/{seq}
+    // - 작성자 체크는 프론트 또는 서비스/인터셉터에서 처리 가능
+    @DeleteMapping("/delete/{seq}")
+    public ResponseEntity<?> delete(@PathVariable("seq") int seq) {
+        int result = boardService.delete(seq);
+        if (result == 0) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok("OK");
+    }
+
+    // 좋아요 토글
+    // React: POST /board/like/{seq}?memberId=xxx
+    // - 아무 반응 없음     → LIKE 추가
+    // - 이미 LIKE 상태     → 반응 삭제 (좋아요 취소)
+    // - DISLIKE 상태에서   → LIKE 로 변경
+    @PostMapping("/like/{seq}")
+    public ResponseEntity<?> like(
+            @PathVariable("seq") int seq,
+            @RequestParam("memberId") String memberId
+    ) {
+        if (memberId == null || memberId.isBlank()) {
+            return ResponseEntity.badRequest().body("memberId가 필요합니다.");
+        }
+
+        boardService.reactLike(seq, memberId);
+        return ResponseEntity.ok("OK");
+    }
+
+    // 싫어요 토글
+    // React: POST /board/dislike/{seq}?memberId=xxx
+    // - 아무 반응 없음     → DISLIKE 추가
+    // - 이미 DISLIKE 상태 → 반응 삭제 (싫어요 취소)
+    // - LIKE 상태에서     → DISLIKE 로 변경
+    @PostMapping("/dislike/{seq}")
+    public ResponseEntity<?> dislike(
+            @PathVariable("seq") int seq,
+            @RequestParam("memberId") String memberId
+    ) {
+        if (memberId == null || memberId.isBlank()) {
+            return ResponseEntity.badRequest().body("memberId가 필요합니다.");
+        }
+
+        boardService.reactDislike(seq, memberId);
+        return ResponseEntity.ok("OK");
+    }
+
+    // 좋아요 상위 Top 10 조회
+    // React: GET /board/top10
+    // - 나중에 메인 상단 고정용으로 사용
+    @GetMapping("/top10")
+    public ResponseEntity<?> top10() {
+        return ResponseEntity.ok(boardService.findTopByLikeCount(10));
+    }
+
     
 }
