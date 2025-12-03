@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.tnt.project.dto.ClosetDTO;
 import com.tnt.project.dto.ModelDTO;
 import com.tnt.project.services.ModelService;
 
@@ -43,6 +44,16 @@ public class ModelController {
 				
 	}
 	
+	@GetMapping("/publicList")
+	public List<ModelDTO> getModelPublicList() {
+		
+		ModelDTO dto = new ModelDTO();
+				
+		List<ModelDTO> list = modelService.getModelPublicList();
+		
+		return list;
+				
+	}
 	
 	
 	@DeleteMapping("/delete")
