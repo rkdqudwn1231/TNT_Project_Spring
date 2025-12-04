@@ -37,7 +37,7 @@
 
     <select id="getModelPublicList" resultMap="modelResultMap">
         select * from model 
-        where seq in (45,46)
+        where seq in (1,2)
     </select>
 
     <delete id="deleteModel" parameterType="int">
