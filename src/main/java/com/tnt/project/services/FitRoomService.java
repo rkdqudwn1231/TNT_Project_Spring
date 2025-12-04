@@ -149,33 +149,6 @@ public class FitRoomService {
 	}
 
 
-
-	
-
-	// 대기시간
-	
-// 11.19 백업	
-//	public String waitForCompletion(String taskId) {
-//		String url = "https://platform.fitroom.app/api/tryon/v2/tasks/" + taskId;
-//		int maxWait = 60; // 최대 60초
-//		int waited = 0;
-//
-//		while (waited < maxWait) {
-//			ResponseEntity<Map> res = restTemplate.getForEntity(url, Map.class);
-//			Map body = res.getBody();
-//			if ("completed".equalsIgnoreCase((String) body.get("status"))) {
-//				return (String) body.get("download_signed_url");
-//			}
-//			try {
-//				Thread.sleep(2000);
-//				waited += 2;
-//			} catch (InterruptedException e) {
-//				break;
-//			}
-//		}
-//		return null;
-//	}
-
 	//TryOn Task 생성 + 결과 가져오기
 	public String createTryOnAndGetResult(MultipartFile modelImage,
 			MultipartFile upperImage,
@@ -276,7 +249,7 @@ public class FitRoomService {
 
 
 	// 이미지 GCP + DB 저장
-	public void saveToDB(String taskId, String clothType, MultipartFile modelImage,
+	public void saveToDB(String taskId, String clothType, MultipartFile modelImage,String modelName,
 			MultipartFile clothImage, MultipartFile lowerImage, String memberId, String closetCategory,String lowerCategory, String modelSex, 
 			Integer upperClothColorR, Integer upperClothColorG, Integer upperClothColorB, 
 			Integer lowerClothColorR, Integer lowerClothColorG, Integer lowerClothColorB) {
@@ -324,13 +297,25 @@ public class FitRoomService {
 			fdao.insertFitRoom(fitRoomDTO);
 
 			// ================== 4️⃣ Model 테이블 저장 ==================
+//			if (modelImage != null) {
+//				ModelDTO modelDTO = new ModelDTO();
+//				modelDTO.setModelUrl(modelUrl);
+//				modelDTO.setModelName(modelImage.getOriginalFilename());
+//				modelDTO.setMemberId(memberId);
+//				modelDTO.setSex(modelSex);
+//				mdao.insertModel(modelDTO);
+//			}
 			if (modelImage != null) {
-				ModelDTO modelDTO = new ModelDTO();
-				modelDTO.setModelUrl(modelUrl);
-				modelDTO.setModelName(modelImage.getOriginalFilename());
-				modelDTO.setMemberId(memberId);
-				modelDTO.setSex(modelSex);
-				mdao.insertModel(modelDTO);
+			    ModelDTO modelDTO = new ModelDTO();
+			    modelDTO.setModelUrl(modelUrl);
+			    if (modelName != null) {
+			        modelDTO.setModelName(modelName); // sessionStorage에서 가져온 이름 사용
+			    } else {
+			        modelDTO.setModelName(modelImage.getOriginalFilename()); // fallback
+			    }
+			    modelDTO.setMemberId(memberId);
+			    modelDTO.setSex(modelSex);
+			    mdao.insertModel(modelDTO);
 			}
 
 			// ================== 5️⃣ History 테이블 저장 ==================

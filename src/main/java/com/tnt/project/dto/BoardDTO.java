@@ -16,15 +16,19 @@ public class BoardDTO {
     private String image_uuid;          // UUID
     private String image_original;      // 원본 파일명
     private String image_url;           // 이미지 URL
-
+    private int likeCount;      // 좋아요 수
+    private int dislikeCount;   // 싫어요 수
+    private int readCount;      // 조회수
+    
     private Date created_at;            // 작성시간
 
     
     public BoardDTO() {}
-    
+
 
 	public BoardDTO(int seq, String id, String title, String text, String color, String body_shape, String tag,
-			String image_uuid, String image_original, String image_url, Date created_at) {
+			String image_uuid, String image_original, String image_url, int likeCount, int dislikeCount, int readCount,
+			Date created_at) {
 		super();
 		this.seq = seq;
 		this.id = id;
@@ -36,11 +40,11 @@ public class BoardDTO {
 		this.image_uuid = image_uuid;
 		this.image_original = image_original;
 		this.image_url = image_url;
+		this.likeCount = likeCount;
+		this.dislikeCount = dislikeCount;
+		this.readCount = readCount;
 		this.created_at = created_at;
 	}
-
-
-
 
 
 	public int getSeq() {
@@ -143,6 +147,36 @@ public class BoardDTO {
 	}
 
 
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
+
+
+	public int getDislikeCount() {
+		return dislikeCount;
+	}
+
+
+	public void setDislikeCount(int dislikeCount) {
+		this.dislikeCount = dislikeCount;
+	}
+
+
+	public int getReadCount() {
+		return readCount;
+	}
+
+
+	public void setReadCount(int readCount) {
+		this.readCount = readCount;
+	}
+
+
 	public Date getCreated_at() {
 		return created_at;
 	}
@@ -152,7 +186,7 @@ public class BoardDTO {
 		this.created_at = created_at;
 	}
     
-	
     
+
     
 }

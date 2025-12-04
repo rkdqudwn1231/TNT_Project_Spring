@@ -37,7 +37,6 @@
 </insert>
 
 <select id="findAll" resultType="com.tnt.project.dto.BoardDTO">
-
     SELECT 
         seq,
         id,
@@ -48,11 +47,113 @@
         image_uuid,
         image_original,
         image_url,
-        created_at
+        created_at,
+        like_count    AS likeCount,
+        dislike_count AS dislikeCount,
+        read_count    AS readCount
     FROM board
     ORDER BY seq DESC
 </select>
 
+  <!-- 게시글 1건 상세 조회 -->
+    <select id="findBySeq" parameterType="int" resultType="com.tnt.project.dto.BoardDTO">
+        SELECT
+            seq,
+            id,
+            title,
+            text,
+            color,
+            body_shape,
+            image_uuid,
+            image_original,
+            image_url,
+            created_at,
+            like_count    AS likeCount,
+            dislike_count AS dislikeCount,
+            read_count    AS readCount
+        FROM board
+        WHERE seq = #{seq}
+    </select>
 
+    <!-- 조회수 증가 -->
+    <update id="increaseReadCount" parameterType="int">
+        UPDATE board
+        SET read_count = read_count + 1
+        WHERE seq = #{seq}
+    </update>
+
+    <!-- 게시글 삭제 -->
+    <delete id="delete" parameterType="int">
+        DELETE FROM board
+        WHERE seq = #{seq}
+    </delete>
+
+    <!-- 좋아요 +1 -->
+    <update id="increaseLike" parameterType="int">
+        UPDATE board
+        SET like_count = like_count + 1
+        WHERE seq = #{seq}
+    </update>
+
+    <!-- 좋아요 -1 (0 아래로는 내려가지 않게 방지해도 됨) -->
+    <update id="decreaseLike" parameterType="int">
+        UPDATE board
+        SET like_count = like_count - 1
+        WHERE seq = #{seq}
+          AND like_count > 0
+    </update>
+
+    <!-- 싫어요 +1 -->
+    <update id="increaseDislike" parameterType="int">
+        UPDATE board
+        SET dislike_count = dislike_count + 1
+        WHERE seq = #{seq}
+    </update>
+
+    <!-- 싫어요 -1 -->
+    <update id="decreaseDislike" parameterType="int">
+        UPDATE board
+        SET dislike_count = dislike_count - 1
+        WHERE seq = #{seq}
+          AND dislike_count > 0
+    </update>
+
+    <!-- 좋아요 순 Top N (Oracle 11 → ROWNUM 서브쿼리 사용) -->
+    <select id="findTopByLikeCount" parameterType="map"
+            resultType="com.tnt.project.dto.BoardDTO">
+        SELECT
+            seq,
+            id,
+            title,
+            text,
+            color,
+            body_shape,
+            image_uuid,
+            image_original,
+            image_url,
+            created_at,
+            like_count    AS likeCount,
+            dislike_count AS dislikeCount,
+            read_count    AS readCount
+        FROM (
+            SELECT
+                seq,
+                id,
+                title,
+                text,
+                color,
+                body_shape,
+                image_uuid,
+                image_original,
+                image_url,
+                created_at,
+                like_count,
+                dislike_count,
+                read_count
+            FROM board
+            ORDER BY like_count DESC, created_at DESC
+        )
+        WHERE ROWNUM &lt;= #{limit}
+    </select>
 
 </mapper>

@@ -55,6 +55,10 @@ public class ModelService {
 		return modeldao.getModelList(memberId);
 	}
 
+	public List<ModelDTO> getModelPublicList() {
+	
+		return modeldao.getModelPublicList();
+	}
 
 	// 삭제
 	public int deleteModel(int seq) {
@@ -72,6 +76,8 @@ public class ModelService {
 		
 		return modeldao.editModel(params);
 	}
+
+	
 
 
 
