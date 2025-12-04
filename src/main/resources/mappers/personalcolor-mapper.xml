@@ -5,17 +5,32 @@
   
 <mapper namespace="color">
 
-    <insert id="insert" parameterType="com.tnt.project.dto.PersonalcolorDTO">
-        INSERT INTO Personalcolor (
-            seq,season,tone_type,best_color,worst_color
-        ) VALUES (
-            Personalcolor_seq.NEXTVAL,
-            #{season},
-            #{tone_type},
-            #{best_color},
-            #{worst_color}
-     
-        )
-    </insert>
+<insert id="insert" parameterType="com.tnt.project.dto.PersonalcolorDTO">
+    INSERT INTO personalcolor (
+        seq,
+        season,
+        tone_type,
+        best_color,
+        worst_color,
+        member_id
+    ) VALUES (
+        personalcolor_seq.NEXTVAL,
+        #{season},
+        #{tone_type},
+        #{best_color},
+        #{worst_color},
+        #{member_id}
+    )
+</insert>
+
+
+   <update id="update" parameterType="com.tnt.project.dto.PersonalcolorDTO">
+    UPDATE member
+    SET personal_color = #{season}
+    WHERE id = #{member_id}
+</update>
+
+
+
 
 </mapper>

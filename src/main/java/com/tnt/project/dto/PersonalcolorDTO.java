@@ -6,6 +6,8 @@ public class PersonalcolorDTO {
 	private String tone_type;
 	private String best_color;
 	private String worst_color;
+	private String member_id;
+
 
 
 	public PersonalcolorDTO() {
@@ -14,6 +16,15 @@ public class PersonalcolorDTO {
 
 	public int getSeq() {
 		return seq;
+	}
+	
+
+	public String getMember_id() {
+		return member_id;
+	}
+
+	public void setMember_id(String member_id) {
+		this.member_id = member_id;
 	}
 
 
@@ -49,13 +60,14 @@ public class PersonalcolorDTO {
 		this.worst_color = worst_color;
 	}
 
-	public PersonalcolorDTO(int seq, String season, String tone_type, String best_color, String worst_color) {
+	public PersonalcolorDTO(int seq, String season, String tone_type, String best_color, String worst_color,String member_id) {
 		super();
 		this.seq = seq;
 		this.season = season;
 		this.tone_type = tone_type;
 		this.best_color = best_color;
 		this.worst_color = worst_color;
+		this.member_id=member_id;
 	}
 
 
