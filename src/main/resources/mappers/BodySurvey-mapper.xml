@@ -15,17 +15,22 @@
         ANSWER_Q3,
         ANSWER_Q4,
         ANSWER_Q5,
+        ANSWER_Q6,
+        ANSWER_Q7,
+        
         BODY_TYPE,  CREATED_AT
     ) VALUES (
         BODY_SURVEY_SEQ.NEXTVAL,
-        #{member_id, jdbcType=VARCHAR},
-        #{gender, jdbcType=VARCHAR},
-        #{answer_q1, jdbcType=VARCHAR},
-        #{answer_q2, jdbcType=VARCHAR},
-        #{answer_q3, jdbcType=VARCHAR},
-        #{answer_q4, jdbcType=VARCHAR},
-        #{answer_q5, jdbcType=VARCHAR},
-        #{body_type, jdbcType=VARCHAR}, SYSDATE
+        #{member_id},
+        #{gender},
+        #{answer_q1},
+        #{answer_q2},
+        #{answer_q3},
+        #{answer_q4},
+        #{answer_q5},
+        #{answer_q6},
+        #{answer_q7},
+        #{body_type}, SYSDATE
     )
 </insert>
 
@@ -38,8 +43,8 @@
         OUTER_TIPS,
         PATTERN_TIPS,
         IMAGE_URL  FROM BODY_TYPE
-    WHERE BODY_TYPE = #{body_type, jdbcType=VARCHAR}
-      AND GENDER = #{gender, jdbcType=VARCHAR}
+    WHERE BODY_TYPE = #{body_type}
+      AND GENDER = #{gender}
 </select>
 
 </mapper>

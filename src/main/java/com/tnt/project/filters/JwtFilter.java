@@ -43,9 +43,9 @@ public class JwtFilter extends OncePerRequestFilter {
 				List<String> roles = jwt.getRolesFromToken(token);
 				
 				List<SimpleGrantedAuthority> auths = new ArrayList<>(); // 권한 목록 저장용 리스트
-				for(String role : roles) {
-					auths.add(new SimpleGrantedAuthority("ROLE_"+role));	//스프링 싴큐리티가 요구하는 Prefix 와 데이터 타입.
-				}
+				//for(String role : roles) {
+				//	auths.add(new SimpleGrantedAuthority("ROLE_"+role));	//스프링 싴큐리티가 요구하는 Prefix 와 데이터 타입.
+				//}
 
 				UsernamePasswordAuthenticationToken authentication = 
 						new UsernamePasswordAuthenticationToken(id,null,auths); //id, pw, 권한 목록
