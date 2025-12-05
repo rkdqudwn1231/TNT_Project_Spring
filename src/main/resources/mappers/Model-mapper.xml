@@ -32,12 +32,13 @@
     </resultMap>
 
     <select id="getModelList" parameterType="string" resultMap="modelResultMap">
-        select * from model where member_id = #{memberId,jdbcType=VARCHAR}
+        select * from model where member_id = #{memberId,jdbcType=VARCHAR} order by seq
     </select>	
 
     <select id="getModelPublicList" resultMap="modelResultMap">
         select * from model 
         where seq in (1,2)
+      
     </select>
 
     <delete id="deleteModel" parameterType="int">
