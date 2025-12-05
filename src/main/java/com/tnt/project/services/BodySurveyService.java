@@ -25,7 +25,7 @@ public class BodySurveyService {
 
     public Map<String, Object> analyzeSurvey(BodySurveyDTO dto ) {
 
-        // 설문 기반 체형 계산
+        // 설문 기반 체형 계산 ㅎ
         String body_type = algorithm.evaluate(
                 dto.getAnswer_q1(),
                 dto.getAnswer_q2(),
