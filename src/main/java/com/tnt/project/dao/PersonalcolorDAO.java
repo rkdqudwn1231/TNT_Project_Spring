@@ -18,4 +18,14 @@ public class PersonalcolorDAO {
 		System.out.println("왔어용");
 		return mybatis.insert("color.insert",dto);
 	}
+	
+	
+	public int update(PersonalcolorDTO dto) {
+		System.out.println("업데이트 중");
+		return mybatis.update("color.update",dto);
+	}
+	
+	
+	
+	
 }

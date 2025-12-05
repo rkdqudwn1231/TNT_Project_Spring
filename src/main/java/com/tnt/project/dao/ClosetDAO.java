@@ -25,6 +25,11 @@ public class ClosetDAO {
 		return mybatis.selectList("Closet.getClosetList" , memberId);
 	}
 
+	public List<ClosetDTO> getClosetpublicList() {
+		
+		return mybatis.selectList("Closet.getClosetpublicList");
+	}
+	
 	public int deleteCloth(Object seq) {
 		
 		return mybatis.delete("Closet.deleteCloth" , seq);
@@ -34,4 +39,6 @@ public class ClosetDAO {
 	
 		return mybatis.update("Closet.editCloth" , param);
 	}
+
+
 }

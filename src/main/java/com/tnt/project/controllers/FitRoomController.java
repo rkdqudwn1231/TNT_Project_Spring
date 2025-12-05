@@ -1,7 +1,7 @@
-	package com.tnt.project.controllers;
-	
-	
-	import java.util.HashMap;
+		package com.tnt.project.controllers;
+		
+		
+		import java.util.HashMap;
 	import java.util.Map;
 	
 	import org.springframework.beans.factory.annotation.Autowired;
@@ -11,85 +11,103 @@
 	import org.springframework.web.bind.annotation.RequestMapping;
 	import org.springframework.web.bind.annotation.RequestParam;
 	import org.springframework.web.bind.annotation.RestController;
+	import org.springframework.web.client.RestTemplate;
 	import org.springframework.web.multipart.MultipartFile;
 	
 	import com.tnt.project.services.FitRoomService;
-	
-	@RestController
-	@RequestMapping("/fitroom")
-	public class FitRoomController {
-	
-	
-		@Autowired
-		private FitRoomService fitRoomService;
-		private final String BASE_URL = "https://platform.fitroom.app/api/tryon/v2";
+		
+		@RestController
+		@RequestMapping("/fitroom")
+		public class FitRoomController {
 		
 		
-	
-		// taskId 돌리는 형식 이미지 그대로받아오기
-		@PostMapping("/wear")
-		public ResponseEntity<Map<String, Object>> createTryOn(
-		        @RequestParam("model_image") MultipartFile modelImage,
-		        @RequestParam(value = "cloth_image", required = false) MultipartFile upperImage,
-		        @RequestParam(value = "lower_cloth_image", required = false) MultipartFile lowerImage,
-		        @RequestParam("cloth_type") String clothType) {
+			@Autowired
+			private FitRoomService fitRoomService;
+			private final String BASE_URL = "https://platform.fitroom.app/api/tryon/v2";
+			
+			
+		
+			// taskId 돌리는 형식 이미지 그대로받아오기
+			@PostMapping("/wear")
+			public ResponseEntity<Map<String, Object>> createTryOn(
+			        @RequestParam("model_image") MultipartFile modelImage,
+			        @RequestParam(value = "cloth_image", required = false) MultipartFile upperImage,
+			        @RequestParam(value = "lower_cloth_image", required = false) MultipartFile lowerImage,
+			        @RequestParam("cloth_type") String clothType) {
+		
+			
+			    String taskId = fitRoomService.createTryOnTask(modelImage, upperImage, lowerImage, clothType);
+		
+			
+			    Map<String, Object> result = Map.of(
+			        "status", "ok",
+			        "taskId", taskId
+			    );
+		
+			    return ResponseEntity.ok(result);
+			}
+		
 	
 		
-		    String taskId = fitRoomService.createTryOnTask(modelImage, upperImage, lowerImage, clothType);
-	
+			@PostMapping("/save")
+			public ResponseEntity<?> saveTryOnResult(
+					 @RequestParam("taskId") String taskId,
+			        @RequestParam("cloth_type") String clothType,
+			        @RequestParam("model_image") MultipartFile modelImage,
+			        @RequestParam(value="modelName", required=false) String modelName,
+			        @RequestParam(value = "cloth_image", required = false) MultipartFile clothImage,
+			        @RequestParam(value = "lower_cloth_image", required = false) MultipartFile lowerImage,
+			        @RequestParam("memberId") String memberId,
+			        @RequestParam("ClosetCategory") String ClosetCategory,
+			        @RequestParam(value="lowerCategory", required=false) String lowerCategory,
+			        @RequestParam("sex") String modelSex,
+			        @RequestParam(value="upperClothColorR", required=false) Integer upperClothColorR,
+			        @RequestParam(value="upperClothColorG", required=false) Integer upperClothColorG,
+			        @RequestParam(value="upperClothColorB", required=false) Integer upperClothColorB,
+			        @RequestParam(value="lowerClothColorR", required=false) Integer lowerClothColorR,
+			        @RequestParam(value="lowerClothColorG", required=false) Integer lowerClothColorG,
+			        @RequestParam(value="lowerClothColorB", required=false) Integer lowerClothColorB
+			
+			) {
+			    fitRoomService.saveToDB(taskId, clothType, modelImage,modelName, clothImage, lowerImage , memberId,ClosetCategory,lowerCategory,modelSex
+			    		,upperClothColorR,upperClothColorG,upperClothColorB
+			    		,lowerClothColorR,lowerClothColorG,lowerClothColorB);
+			    return ResponseEntity.ok("saved");
+			}
 		
-		    Map<String, Object> result = Map.of(
-		        "status", "ok",
-		        "taskId", taskId
-		    );
 	
-		    return ResponseEntity.ok(result);
+			
+			
+			@GetMapping("/status")
+			public ResponseEntity<Map<String, Object>> checkStatus(@RequestParam("taskId") String taskId) {
+			    String imageUrl = fitRoomService.waitForCompletion(taskId); // Task 완료될 때까지 체크
+			    Map<String, Object> result = new HashMap<>();
+			    result.put("status", imageUrl != null ? "completed" : "pending");
+			    result.put("imageUrl", imageUrl); // 완료되면 합성 이미지 URL 반환
+			    return ResponseEntity.ok(result);
+			}
+			
+			
+			@GetMapping("/fetchImage")
+			public ResponseEntity<byte[]> fetchImage(@RequestParam String url) {
+			    try {
+			        RestTemplate restTemplate = new RestTemplate();
+			        byte[] imageBytes = restTemplate.getForObject(url, byte[].class);
+	
+			        // Content-Type 추정 (여기서는 jpeg, 필요하면 확장자 검사 가능)
+			        return ResponseEntity.ok()
+			                .header("Content-Type", "image/jpeg")
+			                .body(imageBytes);
+			    } catch (Exception e) {
+			        e.printStackTrace();
+			        return ResponseEntity.status(500).body(null);
+			    }
+			}
+	
+			
 		}
-	
-
-	
-		@PostMapping("/save")
-		public ResponseEntity<?> saveTryOnResult(
-				 @RequestParam("taskId") String taskId,
-		        @RequestParam("cloth_type") String clothType,
-		        @RequestParam("model_image") MultipartFile modelImage,
-		        @RequestParam(value = "cloth_image", required = false) MultipartFile clothImage,
-		        @RequestParam(value = "lower_cloth_image", required = false) MultipartFile lowerImage,
-		        @RequestParam("memberId") String memberId,
-		        @RequestParam("ClosetCategory") String ClosetCategory,
-		        @RequestParam(value="lowerCategory", required=false) String lowerCategory,
-		        @RequestParam("sex") String modelSex,
-		        @RequestParam(value="upperClothColorR", required=false) Integer upperClothColorR,
-		        @RequestParam(value="upperClothColorG", required=false) Integer upperClothColorG,
-		        @RequestParam(value="upperClothColorB", required=false) Integer upperClothColorB,
-		        @RequestParam(value="lowerClothColorR", required=false) Integer lowerClothColorR,
-		        @RequestParam(value="lowerClothColorG", required=false) Integer lowerClothColorG,
-		        @RequestParam(value="lowerClothColorB", required=false) Integer lowerClothColorB
-		
-		) {
-		    fitRoomService.saveToDB(taskId, clothType, modelImage, clothImage, lowerImage , memberId,ClosetCategory,lowerCategory,modelSex
-		    		,upperClothColorR,upperClothColorG,upperClothColorB
-		    		,lowerClothColorR,lowerClothColorG,lowerClothColorB);
-		    return ResponseEntity.ok("saved");
-		}
-	
-
-		
-		
-		@GetMapping("/status")
-		public ResponseEntity<Map<String, Object>> checkStatus(@RequestParam("taskId") String taskId) {
-		    String imageUrl = fitRoomService.waitForCompletion(taskId); // Task 완료될 때까지 체크
-		    Map<String, Object> result = new HashMap<>();
-		    result.put("status", imageUrl != null ? "completed" : "pending");
-		    result.put("imageUrl", imageUrl); // 완료되면 합성 이미지 URL 반환
-		    return ResponseEntity.ok(result);
-		}
 		
 		
 		
-	}
-	
-	
-	
-	
-	
+		
+		

@@ -12,15 +12,16 @@ public class BodySurveyDTO {
 	private String answer_q3;
 	private String answer_q4;
 	private String answer_q5;
+	private String answer_q6;
+	private String answer_q7;
 	private String body_type;
 	private Timestamp created_at;
-	
-	
 	
 	public BodySurveyDTO() {}
 
 	public BodySurveyDTO(int seq, String member_id, String gender, String answer_q1, String answer_q2, String answer_q3,
-			String answer_q4, String answer_q5, String body_type, Timestamp created_at) {
+			String answer_q4, String answer_q5, String answer_q6, String answer_q7, String body_type,
+			Timestamp created_at) {
 		super();
 		this.seq = seq;
 		this.member_id = member_id;
@@ -30,6 +31,8 @@ public class BodySurveyDTO {
 		this.answer_q3 = answer_q3;
 		this.answer_q4 = answer_q4;
 		this.answer_q5 = answer_q5;
+		this.answer_q6 = answer_q6;
+		this.answer_q7 = answer_q7;
 		this.body_type = body_type;
 		this.created_at = created_at;
 	}
@@ -98,6 +101,22 @@ public class BodySurveyDTO {
 		this.answer_q5 = answer_q5;
 	}
 
+	public String getAnswer_q6() {
+		return answer_q6;
+	}
+
+	public void setAnswer_q6(String answer_q6) {
+		this.answer_q6 = answer_q6;
+	}
+
+	public String getAnswer_q7() {
+		return answer_q7;
+	}
+
+	public void setAnswer_q7(String answer_q7) {
+		this.answer_q7 = answer_q7;
+	}
+
 	public String getBody_type() {
 		return body_type;
 	}
@@ -113,5 +132,5 @@ public class BodySurveyDTO {
 	public void setCreated_at(Timestamp created_at) {
 		this.created_at = created_at;
 	}
-	
+
 }

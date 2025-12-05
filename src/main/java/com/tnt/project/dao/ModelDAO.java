@@ -29,6 +29,11 @@ public class ModelDAO {
 
 		return mybatis.selectList("Model.getModelList",memberId);
 	}
+	
+	public List<ModelDTO> getModelPublicList() {
+	
+		return mybatis.selectList("Model.getModelPublicList");
+	}
 
 	public int deleteModel(int seq) {
 
@@ -39,6 +44,8 @@ public class ModelDAO {
 	
 		return mybatis.update("Model.editModel",params);
 	}
+
+
 
 
 
