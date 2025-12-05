@@ -153,8 +153,8 @@ public class ChatbotService {
 				.asText();
 
 		// 6) 히스토리 업데이트
-		chatbotDAO.insertHistory(userId, "user" , prompt);
-		chatbotDAO.insertHistory(userId, "assistant" , answer);
+//		chatbotDAO.insertHistory(userId, "user" , prompt);
+//		chatbotDAO.insertHistory(userId, "assistant" , answer);
 
 		// 7) 프론트로 응답
 		return Map.of("answer", answer);
