@@ -1,5 +1,6 @@
 package com.tnt.project.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tnt.project.dto.MemberDTO;
 import com.tnt.project.services.AuthService;
 import com.tnt.project.utils.JwtUtil;
 
@@ -27,23 +29,34 @@ public class AuthController {
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody Map<String,String> user){
 		String id = user.get("id");
-        String pw = user.get("pw");
+		String pw = user.get("pw");
 
 		try {
-			// 로그인 처리 + ROLE 반환
-			List<String> roles = authService.login(id, pw);
-			// JWT 생성
-			String token = jwt.createToken(id, roles);
+			// 1) 로그인 검증 + 회원 정보 획득
+			MemberDTO member = authService.login(id, pw);
 
-			return ResponseEntity.ok(Map.of(
-				"token", token,
-				"id", id,
-				"roles", String.join(",", roles)
-				
-			));
-		
+			// 2) 권한 생성
+			List<String> roles = new ArrayList<>();
+			if ("admin".equals(member.getId())) {
+				roles.add("ADMIN");
+			} else {
+				roles.add("MEMBER");
+			}
+
+			// 3) JWT 생성 (id 기준)
+			String token = jwt.createToken(member.getId(), roles);
+
+			// 4) 프론트로 내려줄 정보에 nickname 추가
+			return ResponseEntity.ok(
+				Map.of(
+					"token", token,
+					"id", member.getId(),
+					"nickname", member.getNickname(),      // ← 여기
+					"roles", String.join(",", roles)
+				)
+			);
+
 		} catch (Exception e) {
-			// 로그인 실패(아이디 또는 비번 불일치)
 			e.printStackTrace();
 			return ResponseEntity
 					.status(HttpStatus.UNAUTHORIZED)

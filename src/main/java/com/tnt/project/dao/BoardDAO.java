@@ -25,7 +25,13 @@ public class BoardDAO {
     public List<BoardDTO> findAll() {
         return mybatis.selectList("Board.findAll");
     }
+    
+    
+    public int update(BoardDTO dto) {
+        return mybatis.update("Board.update", dto);
+    }
 
+    
     // 게시글 1건 상세 조회
     public BoardDTO findBySeq(int seq) {
         return mybatis.selectOne("Board.findBySeq", seq);

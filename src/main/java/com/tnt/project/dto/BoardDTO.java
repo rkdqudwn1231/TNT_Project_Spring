@@ -19,6 +19,8 @@ public class BoardDTO {
     private int likeCount;      // 좋아요 수
     private int dislikeCount;   // 싫어요 수
     private int readCount;      // 조회수
+    private String writer_nickname;
+    
     
     private Date created_at;            // 작성시간
 
@@ -44,6 +46,16 @@ public class BoardDTO {
 		this.dislikeCount = dislikeCount;
 		this.readCount = readCount;
 		this.created_at = created_at;
+	}
+
+	
+	public String getWriter_nickname() {
+		return writer_nickname;
+	}
+
+
+	public void setWriter_nickname(String writer_nickname) {
+		this.writer_nickname = writer_nickname;
 	}
 
 

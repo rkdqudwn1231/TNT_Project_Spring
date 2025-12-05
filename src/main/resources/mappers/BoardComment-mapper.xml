@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BoardComment">
+
+    <!-- 댓글 목록: 특정 게시글의 삭제 안 된 댓글만 시간순
+         - member_id 로 member 테이블 JOIN 해서 최신 닉네임을 member_nickname 으로 내려줌 -->
+    <select id="findByBoardSeq"
+            parameterType="int"
+            resultType="com.tnt.project.dto.BoardCommentDTO">
+        SELECT
+            c.seq,
+            c.board_seq,
+            c.member_id,
+            m.nickname       AS member_nickname,
+            c.content,
+            c.parent_seq,
+            c.depth,
+            c.created_at,
+            c.updated_at,
+            c.is_deleted
+        FROM board_comment c
+        LEFT JOIN member m
+          ON c.member_id = m.id         <!-- FK 로 닉네임 조회 -->
+        WHERE c.board_seq = #{boardSeq}
+          AND c.is_deleted = 'N'
+        ORDER BY
+            NVL(c.parent_seq, c.seq),   -- 부모 없으면 자기 seq 기준
+            c.depth,
+            c.created_at
+    </select>
+
+    <!-- 댓글 등록: 시퀀스 사용
+         - member_id : 로그인한 회원 ID
+         - member_nickname : 그 시점 닉네임(원하면 같이 저장, 안 써도 됨) -->
+    <insert id="insert"
+            parameterType="com.tnt.project.dto.BoardCommentDTO">
+
+        <selectKey keyProperty="seq"
+                   resultType="int"
+                   order="BEFORE">
+            SELECT board_comment_seq.NEXTVAL FROM dual
+        </selectKey>
+
+        INSERT INTO board_comment (
+            seq,
+            board_seq,
+            member_id,
+            member_nickname,
+            content,
+            created_at,
+            updated_at,
+            is_deleted
+        ) VALUES (
+            #{seq},
+            #{board_seq},
+            #{member_id},
+            #{member_nickname},
+            #{content},
+            SYSDATE,
+            SYSDATE,
+            'N'
+        )
+    </insert>
+
+    <!-- 댓글 내용 수정
+         - 이제는 member_nickname 이 아니라 member_id 로 본인 여부 체크 -->
+    <update id="updateContent"
+            parameterType="com.tnt.project.dto.BoardCommentDTO">
+        UPDATE board_comment
+        SET
+            content    = #{content},
+            updated_at = SYSDATE
+        WHERE seq        = #{seq}
+          AND member_id  = #{member_id}
+          AND is_deleted = 'N'
+    </update>
+
+    <!-- 댓글 삭제 (soft delete) -->
+    <update id="softDelete"
+            parameterType="com.tnt.project.dto.BoardCommentDTO">
+        UPDATE board_comment
+        SET
+            is_deleted = 'Y',
+            updated_at = SYSDATE
+        WHERE seq        = #{seq}
+          AND member_id  = #{member_id}
+          AND is_deleted = 'N'
+    </update>
+
+    <!-- 대댓글 등록
+         - 마찬가지로 member_id + member_nickname 둘 다 넣어줌 -->
+    <insert id="insertReply"
+            parameterType="com.tnt.project.dto.BoardCommentDTO">
+
+        <selectKey keyProperty="seq"
+                   resultType="int"
+                   order="BEFORE">
+            SELECT board_comment_seq.NEXTVAL FROM dual
+        </selectKey>
+
+        INSERT INTO board_comment (
+            seq,
+            board_seq,
+            member_id,
+            member_nickname,
+            content,
+            parent_seq,
+            depth,
+            created_at,
+            updated_at,
+            is_deleted
+        ) VALUES (
+            #{seq},
+            #{board_seq},
+            #{member_id},
+            #{member_nickname},
+            #{content},
+            #{parent_seq},
+            1,
+            SYSDATE,
+            SYSDATE,
+            'N'
+        )
+    </insert>
+
+</mapper>

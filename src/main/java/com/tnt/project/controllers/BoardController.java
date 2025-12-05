@@ -1,26 +1,28 @@
 package com.tnt.project.controllers;
 
-       import java.io.IOException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tnt.project.dto.BoardDTO;
 import com.tnt.project.services.BoardService;
 import com.tnt.project.services.BoardTagService;
 import com.tnt.project.services.FileService;
-
-
 
 @RestController
 @RequestMapping("/board")
@@ -43,6 +45,11 @@ public class BoardController {
     ) {
 
         try {
+            // 0) 작성자 ID 필수 체크 (member.id)
+            if (dto.getId() == null || dto.getId().isBlank()) {
+                return ResponseEntity.badRequest().body("작성자 ID가 누락되었습니다.");
+            }
+
             // 1) 이미지 UUID 생성
             String uuid = UUID.randomUUID().toString();
             String fileName = "board/" + uuid + "_" + photo.getOriginalFilename();
@@ -61,7 +68,6 @@ public class BoardController {
 
             // 4) 게시글 저장 → seq 반환
             int boardSeq = boardService.insert(dto);
-            System.out.println(boardSeq);
 
             // 5) 태그 저장
             if (dto.getTag() != null && !dto.getTag().isBlank()) {
@@ -84,7 +90,21 @@ public class BoardController {
     }
     
     
- // 게시글 목록 조회
+    @PutMapping("/update/{seq}")
+    public ResponseEntity<?> update(
+            @PathVariable("seq") int seq,
+            @RequestBody BoardDTO dto
+    ) {
+        dto.setSeq(seq); // path 로 받은 seq를 DTO에 세팅
+
+        int result = boardService.update(dto);
+        if (result == 0) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok("OK");
+    }
+    
+    // 게시글 목록 조회
     @GetMapping("/list")
     public ResponseEntity<?> list() {
         return ResponseEntity.ok(boardService.findAll());
@@ -96,7 +116,6 @@ public class BoardController {
     // - 조회수(read_count)는 서비스에서 증가 처리
     @GetMapping("/detail/{seq}")
     public ResponseEntity<?> detail(@PathVariable("seq") int seq) {
-    	System.out.println("여기까지옴");
         BoardDTO dto = boardService.getDetail(seq);
         if (dto == null) {
             return ResponseEntity.notFound().build();
@@ -158,6 +177,25 @@ public class BoardController {
     @GetMapping("/top10")
     public ResponseEntity<?> top10() {
         return ResponseEntity.ok(boardService.findTopByLikeCount(10));
+    }
+
+ // BoardController.java
+
+    @GetMapping("/{seq}/reaction")
+    public ResponseEntity<?> getReaction(
+            @PathVariable("seq") int seq,
+            @RequestParam("memberId") String memberId
+    ) {
+        if (memberId == null || memberId.isBlank()) {
+            return ResponseEntity.badRequest().body("memberId가 필요합니다.");
+        }
+
+        String reaction = boardService.getMyReaction(seq, memberId);
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("reaction", reaction); // "LIKE" / "DISLIKE" / null
+
+        return ResponseEntity.ok(body);
     }
 
     

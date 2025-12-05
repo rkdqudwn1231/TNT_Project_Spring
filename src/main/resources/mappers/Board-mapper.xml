@@ -38,43 +38,68 @@
 
 <select id="findAll" resultType="com.tnt.project.dto.BoardDTO">
     SELECT 
-        seq,
-        id,
-        title,
-        text,
-        color,
-        body_shape,
-        image_uuid,
-        image_original,
-        image_url,
-        created_at,
-        like_count    AS likeCount,
-        dislike_count AS dislikeCount,
-        read_count    AS readCount
-    FROM board
-    ORDER BY seq DESC
+        b.seq,
+        b.id,
+        m.nickname AS writer_nickname,
+        b.title,
+        b.text,
+        b.color,
+        b.body_shape,
+        b.image_uuid,
+        b.image_original,
+        b.image_url,
+        b.created_at,
+        b.like_count    AS likeCount,
+        b.dislike_count AS dislikeCount,
+        b.read_count    AS readCount,
+        (
+            SELECT LISTAGG(t.tag, ' ')
+            WITHIN GROUP (ORDER BY t.seq)
+            FROM board_tag t
+            WHERE t.board_id = b.seq
+        ) AS tag
+    FROM board b
+    LEFT JOIN member m ON b.id = m.id
+    ORDER BY b.seq DESC
 </select>
 
-  <!-- 게시글 1건 상세 조회 -->
-    <select id="findBySeq" parameterType="int" resultType="com.tnt.project.dto.BoardDTO">
-        SELECT
-            seq,
-            id,
-            title,
-            text,
-            color,
-            body_shape,
-            image_uuid,
-            image_original,
-            image_url,
-            created_at,
-            like_count    AS likeCount,
-            dislike_count AS dislikeCount,
-            read_count    AS readCount
-        FROM board
-        WHERE seq = #{seq}
-    </select>
 
+<!-- 게시글 수정 (제목 + 내용만) -->
+<update id="update" parameterType="com.tnt.project.dto.BoardDTO">
+    UPDATE board
+    SET title = #{title},
+        text  = #{text}
+    WHERE seq = #{seq}
+</update>
+
+
+  <!-- 게시글 1건 상세 조회 -->
+<select id="findBySeq" parameterType="int"
+        resultType="com.tnt.project.dto.BoardDTO">
+    SELECT
+        b.seq,
+        b.id,
+        m.nickname AS writer_nickname,
+        b.title,
+        b.text,
+        b.color,
+        b.body_shape,
+        b.image_uuid,
+        b.image_original,
+        b.image_url,
+        b.created_at,
+        b.like_count    AS likeCount,
+        b.dislike_count AS dislikeCount,
+        b.read_count    AS readCount,
+        (
+            SELECT LISTAGG(t.tag, ' ') WITHIN GROUP (ORDER BY t.seq)
+            FROM board_tag t
+            WHERE t.board_id = b.seq
+        ) AS tag
+    FROM board b
+    LEFT JOIN member m ON b.id = m.id
+    WHERE b.seq = #{seq}
+</select>
     <!-- 조회수 증가 -->
     <update id="increaseReadCount" parameterType="int">
         UPDATE board
