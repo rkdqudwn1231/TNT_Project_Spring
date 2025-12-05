@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,21 +23,50 @@ public class ChatbotController {
 	private ChatbotService chatbotService;
 
 	@PostMapping("/ask")
-	public ResponseEntity<Map<String, Object>> ask(@RequestBody Map<String, Object> body) {
-		String userId = (String) body.get("userId"); // 유저 ID
-		String prompt =(String) body.get("prompt"); // 사용자가 입력한 문장
-		List<Map<String, String>> history =  (List<Map<String, String>>) body.get("history");
+	public ResponseEntity<Map<String, Object>> ask(@RequestBody Map<String, Object> body,  Authentication authentication) {
+		String loginId="";   
+		// 로그인 사용자 아이디(JWT에서 복원된 username)
+		if(authentication != null) {
+			loginId = authentication.getName();   
 
-		System.out.println(userId);
 
-		// service에서 처리해서 답변 보내줌.
-		try {
-			return ResponseEntity.ok(chatbotService.ask(userId, prompt,history));
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(Map.of("error", "요청 처리 중 오류 발생"));
+			String prompt =(String) body.get("prompt"); // 사용자가 입력한 문장
+			List<Map<String, String>> history =  (List<Map<String, String>>) body.get("history");
+
+			System.out.println(loginId);
+
+			// service에서 처리해서 답변 보내줌.
+			try {
+				return ResponseEntity.ok(chatbotService.ask(loginId, prompt,history));
+			} catch (Exception e) {
+				System.out.println(e);
+				return ResponseEntity.badRequest().body(Map.of("error", "요청 처리 중 오류 발생"));
+			}
+		}
+		else
+		{
+			return ResponseEntity.status(401)
+			        .body(Map.of("error", "로그인 필요"));
 		}
 	}
 
+	@GetMapping
+	public ResponseEntity<?> checkToken( Authentication authentication) {
+		String loginId="";   
+		// 로그인 사용자 아이디(JWT에서 복원된 username)
+		if(authentication != null) {
+			System.out.println("여기까지옴");
+			loginId = authentication.getName();   
+			return ResponseEntity.ok("true");
+		}
+		else
+		{
+			System.out.println("여기까지옴1");
+			return ResponseEntity.status(401)
+			        .body(Map.of("error", "false"));
+		}
+	}
+	
 	// ★ 대화 초기화 이것도 프론트엔드에서 받으면 필요가 없어졌다..
 	@DeleteMapping
 	public ResponseEntity<String> clear(@RequestBody Map<String, String> body) {
