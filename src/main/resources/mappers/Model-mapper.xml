@@ -33,7 +33,7 @@
 
     <select id="getModelList" parameterType="string" resultMap="modelResultMap">
         select * from model where member_id = #{memberId,jdbcType=VARCHAR}
-    </select>
+    </select>	
 
     <select id="getModelPublicList" resultMap="modelResultMap">
         select * from model 
