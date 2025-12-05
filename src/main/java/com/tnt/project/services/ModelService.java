@@ -73,10 +73,10 @@ public class ModelService {
 	public int editModel(int seq, String name, String sex) {
 
 		
-	    // 기본 모델(1,2) 수정 금지
-	    if (seq == 1 || seq == 2) {
-	        return -1;
-	    }
+//	    // 기본 모델(1,2) 수정 금지
+//	    if (seq == 1 || seq == 2) {
+//	        return -1;
+//	    }
 		
 		Map<String, Object> params = new HashMap<>();
 		params.put("seq", seq);
