@@ -59,6 +59,8 @@ public class ModelController {
 	@DeleteMapping("/delete")
 	public int deleteModel(@RequestParam int seq) {
 		
+		
+		
 		int del = modelService.deleteModel(seq);
 		
 		
