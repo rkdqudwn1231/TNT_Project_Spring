@@ -16,10 +16,7 @@ public class BodySurveyService {
 
     @Autowired
     private BodySurveyDAO surveryDao;
-    
-    @Autowired
-    private AuthDAO authDAO;
-
+       
     @Autowired
     private BodySurveryAlgorithm algorithm;
 
