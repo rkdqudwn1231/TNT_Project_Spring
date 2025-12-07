@@ -65,7 +65,7 @@
 </resultMap>
 
 <select id="getClosetList" parameterType="string" resultMap="closetResultMap">
-    select * from closet where member_id = #{memberId,jdbcType=VARCHAR}
+    select * from closet where member_id = #{memberId,jdbcType=VARCHAR} order by seq
 </select>
 
     
