@@ -91,6 +91,12 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		 <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-websocket</artifactId>
+    </dependency>
+		
 		<!--11.20 GCP 의존성 추가-->
 		<dependency>
 	    	<groupId>com.google.cloud</groupId>

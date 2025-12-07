@@ -20,4 +20,8 @@ public class MemberDAO {
     public void insertMember(MemberDTO member) {
         mybatis.insert("Member.insertMember", member);
     }
+    
+    public int updateMyPage(MemberDTO dto) {
+        return mybatis.update("Member.updateMyPage", dto);
+    }
 }

@@ -125,5 +125,25 @@
             'N'
         )
     </insert>
+    
+    <select id="findBySeq"
+        parameterType="int"
+        resultType="com.tnt.project.dto.BoardCommentDTO">
+    SELECT
+        seq,
+        board_seq,
+        member_id,
+        member_nickname,
+        content,
+        parent_seq,
+        depth,
+        is_deleted,
+        created_at,
+        updated_at
+    FROM board_comment
+    WHERE seq = #{seq}
+</select>
+
+    
 
 </mapper>

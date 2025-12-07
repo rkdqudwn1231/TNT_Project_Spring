@@ -16,4 +16,13 @@ public class MemberService {
 		dao.insertMember(member);
 	}
 	
+	
+	  public MemberDTO findById(String id) {
+	        return dao.findByUserId(id);
+	    }
+
+	    public void updateMyPage(MemberDTO member) {
+	    	dao.updateMyPage(member);
+	    }
+	
 }

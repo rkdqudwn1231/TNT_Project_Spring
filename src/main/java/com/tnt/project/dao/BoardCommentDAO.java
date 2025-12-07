@@ -23,7 +23,12 @@ public class BoardCommentDAO {
     public int insert(BoardCommentDTO dto) {
         return mybatis.insert("BoardComment.insert", dto);
     }
-
+    
+    // 댓글 1건 조회 (부모 댓글 찾을 때 사용)
+    public BoardCommentDTO findBySeq(int seq) {
+        return mybatis.selectOne("BoardComment.findBySeq", seq);
+    }
+    
     // 댓글 수정 (작성자 닉네임 기준) 
     public int updateContent(BoardCommentDTO dto) {
         return mybatis.update("BoardComment.updateContent", dto);

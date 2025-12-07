@@ -15,28 +15,73 @@ public class MemberDTO {
     private String phone;                       // 전화번호
     private String email;                       // 이메일
 
-    private String profileImageUuid;            // GCP UUID 이름
-    private String profileImageOriginal;        // 원본 파일명
-    private String profileImageUrl;             // 공개 URL
+    private String image_uuid;          // UUID
+    private String image_original;      // 원본 파일명
+    private String image_url;           // 이미지 URL
 
-    private String personalColor;               // spring_warm, summer_cool, autumn_warm, winter_cool
-    private String bodyShape;                   // hourglass, triangle, inverted_triangle, rectangle, apple
+    private String personal_color;               // spring_warm, summer_cool, autumn_warm, winter_cool
+    private String body_shape;                   // hourglass, triangle, inverted_triangle, rectangle, apple
 
     private LocalDateTime createdAt;            // 생성일
     private LocalDateTime updatedAt;            // 수정일
 
     // 기본 생성자
     public MemberDTO() {}
+    
+	public MemberDTO(String id, String password, String nickname, String name, String gender, LocalDate birth,
+			String phone, String email, String image_uuid, String image_original, String image_url,
+			String personal_color, String body_shape, LocalDateTime createdAt, LocalDateTime updatedAt) {
+		super();
+		this.id = id;
+		this.password = password;
+		this.nickname = nickname;
+		this.name = name;
+		this.gender = gender;
+		this.birth = birth;
+		this.phone = phone;
+		this.email = email;
+		this.image_uuid = image_uuid;
+		this.image_original = image_original;
+		this.image_url = image_url;
+		this.personal_color = personal_color;
+		this.body_shape = body_shape;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
 
-    // Getter / Setter
+	// Getter / Setter
     public String getId() {
         return id;
     }
-    public void setUserId(String id) {
+    public void setId(String id) {
         this.id = id;
     }
+        
+    public String getImage_uuid() {
+		return image_uuid;
+	}
 
-    public String getPassword() {
+	public void setImage_uuid(String image_uuid) {
+		this.image_uuid = image_uuid;
+	}
+
+	public String getImage_original() {
+		return image_original;
+	}
+
+	public void setImage_original(String image_original) {
+		this.image_original = image_original;
+	}
+
+	public String getImage_url() {
+		return image_url;
+	}
+
+	public void setImage_url(String image_url) {
+		this.image_url = image_url;
+	}
+
+	public String getPassword() {
         return password;
     }
     public void setPassword(String password) {
@@ -85,42 +130,23 @@ public class MemberDTO {
         this.email = email;
     }
 
-    public String getProfileImageUuid() {
-        return profileImageUuid;
-    }
-    public void setProfileImageUuid(String profileImageUuid) {
-        this.profileImageUuid = profileImageUuid;
-    }
+    public String getPersonal_color() {
+		return personal_color;
+	}
 
-    public String getProfileImageOriginal() {
-        return profileImageOriginal;
-    }
-    public void setProfileImageOriginal(String profileImageOriginal) {
-        this.profileImageOriginal = profileImageOriginal;
-    }
+	public void setPersonal_color(String personal_color) {
+		this.personal_color = personal_color;
+	}
 
-    public String getProfileImageUrl() {
-        return profileImageUrl;
-    }
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
-    }
+	public String getBody_shape() {
+		return body_shape;
+	}
 
-    public String getPersonalColor() {
-        return personalColor;
-    }
-    public void setPersonalColor(String personalColor) {
-        this.personalColor = personalColor;
-    }
+	public void setBody_shape(String body_shape) {
+		this.body_shape = body_shape;
+	}
 
-    public String getBodyShape() {
-        return bodyShape;
-    }
-    public void setBodyShape(String bodyShape) {
-        this.bodyShape = bodyShape;
-    }
-
-    public LocalDateTime getCreatedAt() {
+	public LocalDateTime getCreatedAt() {
         return createdAt;
     }
     public void setCreatedAt(LocalDateTime createdAt) {

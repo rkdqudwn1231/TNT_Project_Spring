@@ -147,19 +147,26 @@
     <select id="findTopByLikeCount" parameterType="map"
             resultType="com.tnt.project.dto.BoardDTO">
         SELECT
-            seq,
-            id,
-            title,
-            text,
-            color,
-            body_shape,
-            image_uuid,
-            image_original,
-            image_url,
-            created_at,
-            like_count    AS likeCount,
-            dislike_count AS dislikeCount,
-            read_count    AS readCount
+            b.seq,
+            b.id,
+            m.nickname AS writer_nickname,
+            b.title,
+            b.text,
+            b.color,
+            b.body_shape,
+            b.image_uuid,
+            b.image_original,
+            b.image_url,
+            b.created_at,
+            b.like_count    AS likeCount,
+            b.dislike_count AS dislikeCount,
+            b.read_count    AS readCount,
+            (
+                SELECT LISTAGG(t.tag, ' ')
+                WITHIN GROUP (ORDER BY t.seq)
+                FROM board_tag t
+                WHERE t.board_id = b.seq
+            ) AS tag
         FROM (
             SELECT
                 seq,
@@ -177,8 +184,10 @@
                 read_count
             FROM board
             ORDER BY like_count DESC, created_at DESC
-        )
+        ) b
+        LEFT JOIN member m ON b.id = m.id
         WHERE ROWNUM &lt;= #{limit}
     </select>
+
 
 </mapper>

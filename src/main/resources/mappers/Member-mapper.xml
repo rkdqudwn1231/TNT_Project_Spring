@@ -5,18 +5,32 @@
 
 <mapper namespace="Member">
 
-  <select id="findByUserId"
-        parameterType="string"
-        resultType="com.tnt.project.dto.MemberDTO">
-    SELECT *
+    <!-- 아이디로 회원 조회 -->
+ <select id="findByUserId" parameterType="string" resultType="com.tnt.project.dto.MemberDTO">
+    SELECT
+        id,
+        password,
+        nickname,
+        name,
+        gender,
+        birth,
+        phone,
+        email,
+        profile_image_uuid     AS image_uuid,
+        profile_image_original AS image_original,
+        profile_image_url      AS image_url,
+        personal_color,
+        body_shape,
+        created_at,
+        updated_at
     FROM member
     WHERE id = #{id}
-</select>
+  </select>
 
-<!-- 회원가입 insert -->
+    <!-- 회원가입 insert -->
     <insert id="insertMember" parameterType="com.tnt.project.dto.MemberDTO">
         INSERT INTO member(
-            user_id,
+            id,
             password,
             nickname,
             name,
@@ -33,7 +47,7 @@
             updated_at
         )
         VALUES(
-            #{userId},
+            #{id},
             #{password},
             #{nickname},
             #{name},
@@ -41,14 +55,29 @@
             #{birth},
             #{phone},
             #{email},
-            #{profileImageUuid},
-            #{profileImageOriginal},
-            #{profileImageUrl},
-            #{personalColor},
-            #{bodyShape},
+            #{image_uuid},
+            #{image_original},
+            #{image_url},
+            #{personal_color},
+            #{body_shape},
             SYSTIMESTAMP,
             SYSTIMESTAMP
         )
     </insert>
+
+    <!-- 마이페이지에서 수정하는 부분만 업데이트 -->
+ <update id="updateMyPage" parameterType="com.tnt.project.dto.MemberDTO">
+    UPDATE member
+    SET
+        nickname              = #{nickname},
+        phone                 = #{phone},
+        personal_color        = #{personal_color, jdbcType=VARCHAR},
+        body_shape            = #{body_shape, jdbcType=VARCHAR},
+        profile_image_uuid     = #{image_uuid, jdbcType=VARCHAR},
+        profile_image_original = #{image_original, jdbcType=VARCHAR},
+        profile_image_url      = #{image_url, jdbcType=VARCHAR}
+    WHERE id = #{id}
+</update>
+
 
 </mapper>
