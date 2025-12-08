@@ -13,5 +13,5 @@
     AND CLOTH_TYPE = #{cloth_type}
     ORDER BY CREATED_AT DESC
 </select>
-    
+ 
 </mapper>

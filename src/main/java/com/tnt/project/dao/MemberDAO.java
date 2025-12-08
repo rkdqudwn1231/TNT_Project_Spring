@@ -1,5 +1,8 @@
 package com.tnt.project.dao;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -23,5 +26,13 @@ public class MemberDAO {
     
     public int updateMyPage(MemberDTO dto) {
         return mybatis.update("Member.updateMyPage", dto);
+    }
+    
+    // 체형 진단 결과 후 결과 저장하기 버튼 눌렀을 때 member에 body_shape에 업데이트
+    public int updateBodyShape(String id, String body_shape) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("id", id);
+        param.put("body_shape", body_shape);
+        return mybatis.update("Member.updateBodyShape", param);
     }
 }

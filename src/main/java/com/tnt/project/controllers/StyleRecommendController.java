@@ -1,6 +1,7 @@
 package com.tnt.project.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 
 import com.tnt.project.dto.ClosetDTO;
+import com.tnt.project.dto.MemberDTO;
 import com.tnt.project.dto.StyleRecommendDTO;
 import com.tnt.project.services.ClosetService;
+import com.tnt.project.services.MemberService;
 import com.tnt.project.services.StyleRecommendService;
 
 @RestController
@@ -27,21 +30,26 @@ public class StyleRecommendController {
 
 	@Autowired
 	private StyleRecommendService styleRecommendService;
+	
+	@Autowired
+	private MemberService memberService ;
 
 	@PostMapping("/saveRecommend")
 	public ResponseEntity<?> saveRecommend(@RequestBody ClosetDTO closetDTO , Authentication authentication) {
 
-	    // 로그인 여부 체크
-	    if (authentication == null) {
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("NEED_LOGIN");
-	    }
+		// 로그인 여부 체크
+		if (authentication == null) {
+			
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("NEED_LOGIN");
+		
+		}
 
-	    // 로그인된 사용자라면 MemberId 세팅
-	    String loginId = authentication.getName();
-	    closetDTO.setMemberId(loginId);
+		// 로그인된 사용자라면 MemberId 세팅
+		String loginId = authentication.getName();
+		closetDTO.setMemberId(loginId);
 
-	    int result = closetService.insertClosetFromRecommend(closetDTO);
-	    return result > 0 ? ResponseEntity.ok("SUCCESS") : ResponseEntity.badRequest().body("FAIL");
+		int result = closetService.insertClosetFromRecommend(closetDTO);
+		return result > 0 ? ResponseEntity.ok("SUCCESS") : ResponseEntity.badRequest().body("FAIL");
 	}
 
 	@GetMapping("/list")
@@ -52,7 +60,6 @@ public class StyleRecommendController {
 			) {
 		return styleRecommendService.getRecommendList(body_type, gender, cloth_type);
 	}
-	
 
 }
 

@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.HttpStatus;
 
 import com.tnt.project.dto.MemberDTO;
 import com.tnt.project.services.MemberService;
@@ -106,4 +108,20 @@ public class MemberController {
             return ResponseEntity.badRequest().body("프로필 이미지 업로드 실패");
         }
     }
+    
+    // 체형 진단 결과 후 결과 저장하기 버튼 눌렀을 때 member에 body_shape에 업데이트
+    @PostMapping("/bodyShape")
+    public ResponseEntity<?> updateBodyShape(@RequestBody Map<String, String> request,Authentication authentication ) {
+    	
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("NEED_LOGIN");
+        }
+
+        String loginId = authentication.getName();
+        String body_type = request.get("body_type");
+
+        int result = memberService.updateBodyShape(loginId, body_type);
+        return result > 0 ? ResponseEntity.ok("SUCCESS") : ResponseEntity.badRequest().body("FAIL");
+    }
+
 }
