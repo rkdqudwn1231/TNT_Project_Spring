@@ -25,7 +25,7 @@ public class ChatbotService {
 	@Autowired
 	private ChatbotDAO chatbotDAO;
 
-	@Value("${gemini.api.key}")
+	@Value("${google.api-key}")
 	private String apiKey;  // application.properties에서 가져옴
 
 	// ★ 유저별 대화 히스토리 메모리 저장소 ( 메모리 저장 방식인데 db 방식이 좋을거 같아서 수정 중 )
