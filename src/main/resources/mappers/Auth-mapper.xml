@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Auth">
+
+    <!-- 로그인용: 기존처럼 member에서 조회 -->
+    <select id="findByUserId"
+            parameterType="string"
+            resultType="com.tnt.project.dto.MemberDTO">
+        SELECT
+            id,
+            password,
+            nickname,
+            name,
+            gender,
+            birth,
+            phone,
+            email,
+            profile_image_uuid     AS image_uuid,
+            profile_image_original AS image_original,
+            profile_image_url      AS image_url,
+            personal_color,
+            body_shape,
+            created_at,
+            updated_at
+        FROM member
+        WHERE id = #{id}
+    </select>
+
+    <!-- 이메일 인증: email_verification 에 upsert -->
+    <insert id="upsertEmailVerification" parameterType="map">
+        MERGE INTO email_verification ev
+        USING (SELECT #{email} AS email FROM dual) src
+        ON (ev.email = src.email)
+        WHEN MATCHED THEN
+          UPDATE SET 
+            ev.token      = #{token},
+            ev.expires_at = #{expires_at},
+            ev.verified   = 'N'
+        WHEN NOT MATCHED THEN
+          INSERT (email, token, expires_at, verified)
+          VALUES (#{email}, #{token}, #{expires_at}, 'N')
+    </insert>
+
+    <!-- 토큰으로 조회 (링크 클릭 시) -->
+    <select id="findVerificationByToken"
+            parameterType="string"
+            resultType="com.tnt.project.dto.EmailVerificationDTO">
+        SELECT
+            email,
+            token,
+            expires_at,
+            verified
+        FROM email_verification
+        WHERE token = #{token}
+    </select>
+
+    <!-- 토큰 기준으로 verified = 'Y' 로 변경 -->
+    <update id="markVerified" parameterType="string">
+        UPDATE email_verification
+        SET verified = 'Y'
+        WHERE token = #{token}
+    </update>
+
+    <!-- 특정 이메일이 인증 완료 상태인지 체크 -->
+    <select id="isEmailVerified"
+            parameterType="string"
+            resultType="int">
+        SELECT
+            CASE 
+                WHEN COUNT(*) > 0 THEN 1
+                ELSE 0
+            END
+        FROM email_verification
+        WHERE email = #{email}
+          AND verified = 'Y'
+          AND expires_at >= SYSDATE  <!-- 만료 안 된 것만 -->
+    </select>
+
+</mapper>
