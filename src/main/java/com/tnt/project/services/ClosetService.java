@@ -108,5 +108,8 @@ public class ClosetService {
 		return closetdao.editCloth(param);
 	}
 
-
+	// 체형 결과 스타일 추천 → 내 옷장 이미지 저장
+	public int insertClosetFromRecommend(ClosetDTO dto) {
+	    return closetdao.insertCloset(dto);
+	}
 }
