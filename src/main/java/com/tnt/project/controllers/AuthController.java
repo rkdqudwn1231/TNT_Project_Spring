@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tnt.project.dto.MemberDTO;
+import com.tnt.project.dto.SessionLogDTO;
 import com.tnt.project.services.AuthService;
+import com.tnt.project.services.ManageService;
 import com.tnt.project.utils.JwtUtil;
 
 @RestController
@@ -25,6 +28,10 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
+
+	@Autowired
+	private ManageService manageService;
+	
     @Autowired
     private JwtUtil jwt;
 
@@ -105,6 +112,10 @@ public class AuthController {
             // JWT 생성 (id 기준)
             String token = jwt.createToken(member.getId(), roles);
 
+
+			//디비에 로그인 접속시간 추가.
+			manageService.login(member.getId());
+            
             // 응답
             return ResponseEntity.ok(
                     Map.of(
@@ -122,4 +133,18 @@ public class AuthController {
                     .body(Map.of("error", e.getMessage()));
         }
     }
+    
+    @PostMapping("/logout")
+	public ResponseEntity<String> logout(Authentication authentication) {
+	    String id = authentication.getName();
+	    String type = "NORMAL"; // 기본 NORMAL
+	    
+	    SessionLogDTO sessionLogDTO = new SessionLogDTO();
+	    sessionLogDTO.setId(id);
+	    sessionLogDTO.setLogout_type(type);
+	    manageService.logout(sessionLogDTO); 
+	    return ResponseEntity.ok("logout recorded");
+	}
+	
+    
 }

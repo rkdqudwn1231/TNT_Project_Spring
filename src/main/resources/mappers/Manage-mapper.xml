@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="manage">
+
+	<insert id="insert" parameterType="String">
+	    INSERT INTO session_log (seq,id, start_time)
+	    VALUES (session_log_seq.NEXTVAL, #{id}, sysdate)
+	</insert>
+
+
+	<update id="update" parameterType="com.tnt.project.dto.SessionLogDTO">
+	    UPDATE session_log t
+		SET t.end_time = sysdate,
+		    t.logout_type = #{logout_type}
+		WHERE t.seq = (
+		    SELECT MAX(seq)
+		    FROM session_log
+		    WHERE id = #{id}
+		)
+	</update>
+
+
+</mapper>
