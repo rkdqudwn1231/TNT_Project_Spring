@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.springframework.http.HttpStatus;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.http.HttpStatus;
 
 import com.tnt.project.dto.MemberDTO;
 import com.tnt.project.services.FileService;
@@ -100,7 +100,7 @@ public class MemberController {
         if (ok) {
             return ResponseEntity.ok(Map.of("message", "비밀번호 변경 완료"));
         } else {
-            return ResponseEntity.status(HttpStatus.SC_NOT_FOUND)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Map.of("message", "해당 이메일로 가입된 계정을 찾을 수 없습니다."));
         }
     }
