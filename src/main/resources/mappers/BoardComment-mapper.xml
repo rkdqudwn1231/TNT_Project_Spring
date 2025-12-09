@@ -8,29 +8,29 @@
     <!-- 댓글 목록: 특정 게시글의 삭제 안 된 댓글만 시간순
          - member_id 로 member 테이블 JOIN 해서 최신 닉네임을 member_nickname 으로 내려줌 -->
     <select id="findByBoardSeq"
-            parameterType="int"
-            resultType="com.tnt.project.dto.BoardCommentDTO">
-        SELECT
-            c.seq,
-            c.board_seq,
-            c.member_id,
-            m.nickname       AS member_nickname,
-            c.content,
-            c.parent_seq,
-            c.depth,
-            c.created_at,
-            c.updated_at,
-            c.is_deleted
-        FROM board_comment c
-        LEFT JOIN member m
-          ON c.member_id = m.id         <!-- FK 로 닉네임 조회 -->
-        WHERE c.board_seq = #{boardSeq}
-          AND c.is_deleted = 'N'
-        ORDER BY
-            NVL(c.parent_seq, c.seq),   -- 부모 없으면 자기 seq 기준
-            c.depth,
-            c.created_at
-    </select>
+        parameterType="int"
+        resultType="com.tnt.project.dto.BoardCommentDTO">
+    SELECT
+        c.seq,
+        c.board_seq,
+        c.member_id,
+        m.nickname       AS member_nickname,
+        c.content,
+        c.parent_seq,
+        c.depth,
+        c.created_at,
+        c.updated_at,
+        c.is_deleted
+    FROM board_comment c
+    LEFT JOIN member m
+      ON c.member_id = m.id   <!-- FK 로 닉네임 조회 -->
+    WHERE c.board_seq = #{boardSeq}
+    ORDER BY
+        NVL(c.parent_seq, c.seq),    <!-- 부모 없으면 자기 seq 기준-->
+        c.depth,
+        c.seq
+</select>
+
 
     <!-- 댓글 등록: 시퀀스 사용
          - member_id : 로그인한 회원 ID

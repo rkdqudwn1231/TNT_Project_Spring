@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.tnt.project.dao.AuthDAO;
@@ -20,6 +21,11 @@ public class AuthService {
 
     @Autowired
     private MailService mailService;
+
+    // application.properties 에서 주입
+    // tnt.app.base-url=http://10.10.55.97 이런 식으로 넣어둔 값
+    @Value("${tnt.app.base-url}")
+    private String baseUrl;
 
     /** 로그인 */
     public MemberDTO login(String id, String rawPw) {
@@ -53,8 +59,8 @@ public class AuthService {
     public void sendVerifyLink(String email) {
         String token = createEmailVerificationToken(email);
 
-        // type=signup 추가
-        String verifyLink = "http://10.10.55.97/auth/verify?token=" + token + "&type=signup";
+        // application.properties 에서 가져온 baseUrl 사용
+        String verifyLink = baseUrl + "/auth/verify?token=" + token + "&type=signup";
 
         String subject = "[TNT] 이메일 인증 안내";
 
@@ -131,7 +137,7 @@ public class AuthService {
     /** 아이디 찾기용 이메일 인증 링크 발송 */
     public void sendFindIdVerifyLink(String email) {
         String token = createEmailVerificationToken(email);
-        String verifyLink = "http://10.10.55.97/auth/verify?token=" + token + "&type=findId";
+        String verifyLink = baseUrl + "/auth/verify?token=" + token + "&type=findId";
 
         String subject = "[TNT] 아이디 찾기 이메일 인증 안내";
 
@@ -207,7 +213,7 @@ public class AuthService {
     /** 비밀번호 찾기용 이메일 인증 링크 발송 */
     public void sendResetPwVerifyLink(String email) {
         String token = createEmailVerificationToken(email);
-        String verifyLink = "http://10.10.55.97/auth/verify?token=" + token + "&type=resetPw";
+        String verifyLink = baseUrl + "/auth/verify?token=" + token + "&type=resetPw";
 
         String subject = "[TNT] 비밀번호 재설정을 위한 이메일 인증 안내";
 
