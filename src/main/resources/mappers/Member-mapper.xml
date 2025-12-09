@@ -108,6 +108,10 @@
         WHERE id = #{id}
     </update>
 
-
+	<update id="updateBodyShape" parameterType="map">
+   		UPDATE member
+   		SET body_shape = #{body_shape}
+  	  	WHERE id = #{id}
+	</update>
  
 </mapper>

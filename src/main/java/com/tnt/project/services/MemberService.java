@@ -10,15 +10,22 @@ import com.tnt.project.utils.Encrypt;
 @Service
 public class MemberService {
 
+<<<<<<< HEAD
     @Autowired
     private MemberDAO dao;
     
+=======
+	@Autowired
+	private MemberDAO dao;
+>>>>>>> bd142d37fcd399760c75fc68ab20261cd3ab6ef0
 
-    @Autowired
-    private AuthService authService;
+	@Autowired
+	private MailService mailService;  // 인증 메일 보내기 위해 
 
-    public void signup(MemberDTO member) {
+	@Autowired
+	private AuthService authService;
 
+<<<<<<< HEAD
         // 1) 이메일 인증 여부 확인
         boolean verified = authService.isEmailVerified(member.getEmail());
         if (!verified) {
@@ -33,11 +40,22 @@ public class MemberService {
         // 3) 암호화된 비밀번호로 저장
         dao.insertMember(member);
     }
+=======
+	public void signup(MemberDTO member) {
 
-    public MemberDTO findById(String id) {
-        return dao.findByUserId(id);
-    }
+		// 1) 이메일 인증 여부 확인
+		boolean verified = authService.isEmailVerified(member.getEmail());
+		if (!verified) {
+			// 필요하면 커스텀 예외로 바꿔도 됨
+			throw new IllegalStateException("이메일 인증이 완료되지 않았습니다.");
+		}
+>>>>>>> bd142d37fcd399760c75fc68ab20261cd3ab6ef0
 
+		// 2) 인증 완료된 이메일이면 회원 DB에 저장
+		dao.insertMember(member);
+	}
+
+<<<<<<< HEAD
     public void updateMyPage(MemberDTO member) {
         dao.updateMyPage(member);
     }
@@ -64,4 +82,18 @@ public class MemberService {
 
 	        return result > 0; // 업데이트 성공 여부
 	    }
+=======
+	public MemberDTO findById(String id) {
+		return dao.findByUserId(id);
+	}
+
+	public void updateMyPage(MemberDTO member) {
+		dao.updateMyPage(member);
+	}
+
+	// 체형 진단 결과 후 결과 저장하기 버튼 눌렀을 때 member에 body_shape 업데이트
+	public int updateBodyShape(String id, String body_shape) {
+		return dao.updateBodyShape(id, body_shape);
+	}
+>>>>>>> bd142d37fcd399760c75fc68ab20261cd3ab6ef0
 }

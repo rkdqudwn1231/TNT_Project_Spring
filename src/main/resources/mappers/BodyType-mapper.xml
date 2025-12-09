@@ -5,11 +5,17 @@
   
 <mapper namespace="BodyType">
 
- <select id="findBodyTypeInfo" resultType="map">
-        SELECT *
-        FROM body_type
-        WHERE body_type = #{body_type}
-          AND gender = #{gender}
-    </select>
+<select id="findBodyTypeInfo" resultType="map">
+    SELECT *
+    FROM BODY_TYPE
+    WHERE BODY_TYPE = #{body_type}
+      AND GENDER = #{gender}
+</select>
+
+<select id="findBodyResult" parameterType="map" resultType="map">
+    SELECT BODY_TYPE, GENDER, SUMMARY, IMAGE_URL, TOP_TIPS, BOTTOM_TIPS, PATTERN_TIPS
+    FROM BODY_TYPE
+    WHERE BODY_TYPE = #{body_type} AND GENDER = #{gender}
+</select>
     
 </mapper>

@@ -28,6 +28,7 @@ public class MemberDAO {
         return mybatis.update("Member.updateMyPage", dto);
     }
     
+
     // 아이디 중복 여부 확인 
     public int checkId(String id) {
         return mybatis.selectOne("Member.checkId", id);
@@ -51,5 +52,12 @@ public class MemberDAO {
 	}
 	
 
-    
+    // 체형 진단 결과 후 결과 저장하기 버튼 눌렀을 때 member에 body_shape에 업데이트
+    public int updateBodyShape(String id, String body_shape) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("id", id);
+        param.put("body_shape", body_shape);
+        return mybatis.update("Member.updateBodyShape", param);
+    }
+
 }
