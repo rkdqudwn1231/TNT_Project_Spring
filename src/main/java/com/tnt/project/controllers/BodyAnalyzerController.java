@@ -60,7 +60,8 @@ public class BodyAnalyzerController {
 		// 텍스트 파트
 		Map<String, Object> textPart = Map.of(
 			    "text", "너는 체형 분석과 스타일링 전문가다.\r\n"
-			          + "사용자가 업로드한 전신 사진을 기준으로 체형 분석하여 결과를 작성한다."
+			          + "사용자가 업로드한 전신 사진을 기준으로 체형 분석하여 결과를 작성한다.\r\n"
+			          + "사용자가 업로드한 사진이 사람이 아니면 사람 아님 출력.\r\n"
 			          + "아래 형식 외의 문장 문구 설명 주의 문장은 절대 출력하지 않는다.\r\n"
 			          + "이모지와 불필요한 기호는 사용하지 않는다\r\n"
 			          + "-- 체형 형태 분석\r\n"
@@ -98,6 +99,16 @@ public class BodyAnalyzerController {
 				.asText();
 
 		System.out.println("답변:"+answer);
+		
+		// ✅ 사람이 아니면 바로 에러 리턴
+		if (answer.contains("사람 아님")) {
+		    return Map.of(
+		        "error", true,
+		        "message", "업로드된 이미지는 사람이 아닙니다."
+		    );
+		}
+		
+		
 		// "--" 기준으로 분리
 		String[] sections = answer.split("--");
 		
