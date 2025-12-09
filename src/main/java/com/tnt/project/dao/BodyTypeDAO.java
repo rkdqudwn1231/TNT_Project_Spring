@@ -16,9 +16,10 @@ public class BodyTypeDAO {
         return mybatis.selectOne("BodyType.findBodyTypeInfo", param);
     }
 
-    public Map<String, Object> findBodyResult(String body_type) {
+    public Map<String, Object> findBodyResult(String body_type,String gender) {
         Map<String, Object> param = new HashMap<>();
         param.put("body_type", body_type);
+        param.put("gender", gender);
         return mybatis.selectOne("BodyType.findBodyResult", param);
     }
 

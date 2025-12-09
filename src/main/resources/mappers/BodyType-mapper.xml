@@ -14,8 +14,8 @@
 
 <select id="findBodyResult" parameterType="map" resultType="map">
     SELECT BODY_TYPE, GENDER, SUMMARY, IMAGE_URL, TOP_TIPS, BOTTOM_TIPS, PATTERN_TIPS
-    FROM BODY_TYPE_INFO
-    WHERE BODY_TYPE = #{body_type}
+    FROM BODY_TYPE
+    WHERE BODY_TYPE = #{body_type} AND GENDER = #{gender}
 </select>
     
 </mapper>

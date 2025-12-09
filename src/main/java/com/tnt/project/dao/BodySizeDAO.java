@@ -13,7 +13,7 @@ public class BodySizeDAO {
     private SqlSession mybatis;
 
     // 치수 진단 결과 저장
-    public int insertBodySize(BodySizeDTO dto) {
-        return mybatis.insert("BodySize.insertBodySize", dto);
+    public int insertBodySize(BodySizeDTO bodySizeDTO) {
+        return mybatis.insert("BodySize.insertBodySize", bodySizeDTO);
     }
 }

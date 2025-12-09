@@ -22,7 +22,7 @@ import com.tnt.project.services.MemberService;
 import com.tnt.project.services.StyleRecommendService;
 
 @RestController
-@RequestMapping("/recommend")
+@RequestMapping("/BodyRecommend")
 public class StyleRecommendController {
 
 	@Autowired
@@ -56,7 +56,7 @@ public class StyleRecommendController {
 	public List<StyleRecommendDTO> getRecommendList(
 			@RequestParam String body_type,
 			@RequestParam String gender,
-			@RequestParam String cloth_type  // upper / lower
+			@RequestParam String cloth_type 
 			) {
 		return styleRecommendService.getRecommendList(body_type, gender, cloth_type);
 	}

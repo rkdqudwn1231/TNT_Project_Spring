@@ -13,15 +13,17 @@ import com.tnt.project.dto.BodySizeDTO;
 import com.tnt.project.services.BodySizeService;
 
 @RestController
-@RequestMapping("/body")
+@RequestMapping("/bodySize")
 public class BodySizeController {
 
     @Autowired
-    private BodySizeService service;
+    private BodySizeService bodySizeService;
 
-    @PostMapping("/size")
-    public Map<String, Object> analyzeBySize( @RequestBody BodySizeDTO dto,   Authentication authentication ) {
+    @PostMapping("/insert")
+    public Map<String, Object> analyzeBySize( @RequestBody BodySizeDTO bodySizeDTO,   Authentication authentication ) {
+    	
         String loginId = (authentication != null ? authentication.getName() : null);
-        return service.analyze(dto, loginId);
+        return bodySizeService.analyze(bodySizeDTO, loginId);
+        
     }
 }

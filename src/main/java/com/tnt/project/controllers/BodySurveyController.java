@@ -13,24 +13,25 @@ import com.tnt.project.dto.BodySurveyDTO;
 import com.tnt.project.services.BodySurveyService;
 
 @RestController
-@RequestMapping("/api/body")
+@RequestMapping("/bodySurvey")
 public class BodySurveyController {
 
     @Autowired
-    private BodySurveyService service;
+    private BodySurveyService bodySurveyService;
 
-    @PostMapping("/survey")
-    public Map<String, Object> analyzeSurvey(@RequestBody BodySurveyDTO dto , Authentication authentication) {
+    @PostMapping("/insert")
+    public Map<String, Object> analyzeSurvey(@RequestBody BodySurveyDTO bodySurveyDTO , 
+    													Authentication authentication) {
        
-    	// 로그인 사용자 아이디(JWT에서 복원된 username)
+    	// 로그인 사용자 아이디
     	if(authentication != null) {
     		
     		String loginId = authentication.getName();    		
-    		dto.setMember_id(loginId);
+    		bodySurveyDTO.setMember_id(loginId);
     		
     	}
     	
-    	return service.analyzeSurvey(dto);
+    	return bodySurveyService.analyzeSurvey(bodySurveyDTO);
     }
 
 }
