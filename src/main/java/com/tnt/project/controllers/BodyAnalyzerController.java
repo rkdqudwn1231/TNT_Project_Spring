@@ -59,14 +59,19 @@ public class BodyAnalyzerController {
 
 		// 텍스트 파트
 		Map<String, Object> textPart = Map.of(
-				"text", "너는 체형 분석과 스타일링 전문가야. 사진을 보고 결과를 아래 형식으로 작성해주는데 특수문자는 사용하지 말 것:\n" +
-						"-- 체형 분석 내용\n" +
-						"여기에 체형 분석 내용을 작성 체형 유형( 삼각형, 역삼각형, 원형, 모래시계형, 직사각형 ) 을 무조건 포함하고 체형 이야기만 넣을 것\n" +
-						"-- 상의 추천\n" +
-						"여기에 추천 내용을 작성\n" +
-						"-- 하의 추천\n" +
-						"여기에 추천 내용을 작성"
-				);
+			    "text", "너는 체형 분석과 스타일링 전문가다.\r\n"
+			          + "사용자가 업로드한 전신 사진을 기준으로 체형 분석하여 결과를 작성한다."
+			          + "아래 형식 외의 문장 문구 설명 주의 문장은 절대 출력하지 않는다.\r\n"
+			          + "이모지와 불필요한 기호는 사용하지 않는다\r\n"
+			          + "-- 체형 형태 분석\r\n"
+			          + " (삼각형, 역삼각형, 원형, 모래시계형, 직사각형) 중 하나만 작성\r\n"
+			          + "-- 체형 분석\r\n"
+			          + "전반적인 체형 분석 결과를 5문장 이상으로 상세히 작성\r\n"
+			          + "-- 상의 추천\r\n"
+			          + "체형 분석 결과를 기반으로 상의 추천을 5문장 이상으로 상세히 추천\r\n"
+			          + "-- 하의 추천\r\n"
+			          + "체형 분석 결과를 기반으로 하의 추천을 5문장 이상으로 상세히 추천"
+			);
 
 		// contents 구성
 		Map<String, Object> content = Map.of(
@@ -92,20 +97,31 @@ public class BodyAnalyzerController {
 				.path("text")
 				.asText();
 
-		   // "--" 기준으로 분리
-        String[] sections = answer.split("--"); 
+		System.out.println("답변:"+answer);
+		// "--" 기준으로 분리
+		String[] sections = answer.split("--");
+		
+		Map<String, String> resultMap = new HashMap<>();
 
+		resultMap.put("bodyType", clean(sections.length > 1 ? sections[1] : ""));
+		resultMap.put("bodyAnalysis", clean(sections.length > 2 ? sections[2] : ""));
+		resultMap.put("topRecommendation", clean(sections.length > 3 ? sections[3] : ""));
+		resultMap.put("bottomRecommendation", clean(sections.length > 4 ? sections[4] : ""));
 
-        Map<String, String> resultMap = new HashMap<>();
-        resultMap.put("bodyAnalysis", sections.length > 1 ? sections[1].trim() : "");
-        resultMap.put("topRecommendation", sections.length > 2 ? sections[2].trim() : "");
-        resultMap.put("bottomRecommendation", sections.length > 3 ? sections[3].trim() : "");
-        
-        System.out.println("체형 분석: " + resultMap.get("bodyAnalysis"));
-        System.out.println("상의 추천: " + resultMap.get("topRecommendation"));
-        System.out.println("하의 추천: " + resultMap.get("bottomRecommendation"));
-        
+		System.out.println("체형 형태: " + resultMap.get("bodyType"));
+		System.out.println("체형 분석: " + resultMap.get("bodyAnalysis"));
+		System.out.println("상의 추천: " + resultMap.get("topRecommendation"));
+		System.out.println("하의 추천: " + resultMap.get("bottomRecommendation"));
+
 		return Map.of("answer", resultMap);
+	}
+	
+	private String clean(String text) {
+	    if (text == null || text.isBlank()) return "";
+
+	    // 첫 줄(제목) 제거
+	    String[] lines = text.trim().split("\n", 2);
+	    return lines.length > 1 ? lines[1].trim() : lines[0].trim();
 	}
 
 }
