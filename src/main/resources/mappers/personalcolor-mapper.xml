@@ -14,7 +14,7 @@
         worst_color,
         member_id
     ) VALUES (
-        personalcolor_seq.NEXTVAL,
+        personal_color_seq.NEXTVAL,
         #{season},
         #{tone_type},
         #{best_color},
