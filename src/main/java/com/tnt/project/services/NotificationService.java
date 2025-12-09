@@ -3,6 +3,7 @@ package com.tnt.project.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import com.tnt.project.dao.NotificationDAO;
@@ -24,8 +25,12 @@ public class NotificationService {
     @Autowired
     private BoardCommentDAO boardCommentDAO;
 
+    // 여기서 바로 WebSocket까지 날릴 거야
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
     /**
-     * 내가 받은 알림 목록
+     * 내가 받은 알림 목록 (최신 10개)
      */
     public List<NotificationDTO> findByMemberId(String memberId) {
         return notificationDAO.findByMemberId(memberId);
@@ -46,11 +51,19 @@ public class NotificationService {
     }
 
     /**
-     * 공통 알림 생성
-     * (필요하면 다른 서비스에서 직접 호출해도 됨)
+     * 공통 알림 생성 + WebSocket 브로드캐스트
+     * (다른 서비스에서는 이 메서드만 사용하면 됨)
      */
     public void createNotification(NotificationDTO dto) {
+        // 1) DB 저장
         notificationDAO.insert(dto);
+
+        // 2) WebSocket 전송 (실시간 토스트용)
+        // 구독 주소: /topic/notifications/{memberId}
+        messagingTemplate.convertAndSend(
+                "/topic/notifications/" + dto.getMember_id(),
+                dto
+        );
     }
 
     // =============================
@@ -59,9 +72,6 @@ public class NotificationService {
 
     /**
      * 게시글 좋아요 알림
-     * - board_seq: 좋아요가 눌린 게시글 번호
-     * - fromMemberId: 좋아요 누른 사람 id
-     * - fromNickname: 좋아요 누른 사람 닉네임 (메시지용)
      */
     public void notifyLikeOnBoard(long boardSeq, String fromMemberId, String fromNickname) {
 
@@ -84,14 +94,11 @@ public class NotificationService {
         noti.setComment_seq(null);         // 댓글 없음
         noti.setMessage(fromNickname + "님이 회원님의 게시글에 좋아요를 눌렀습니다.");
 
-        notificationDAO.insert(noti);
+        createNotification(noti);
     }
 
     /**
      * 게시글에 “새 댓글” 알림
-     * - boardSeq: 댓글이 달린 게시글 번호
-     * - fromMemberId: 댓글 단 사람 id
-     * - fromNickname: 댓글 단 사람 닉네임
      */
     public void notifyCommentOnBoard(long boardSeq, String fromMemberId, String fromNickname) {
 
@@ -114,15 +121,11 @@ public class NotificationService {
         noti.setComment_seq(null); // 필요하면 실제 comment seq 넣어도 됨
         noti.setMessage(fromNickname + "님이 회원님의 게시글에 댓글을 남겼습니다.");
 
-        notificationDAO.insert(noti);
+        createNotification(noti);
     }
 
     /**
      * 내가 쓴 댓글에 “대댓글”이 달렸을 때 알림
-     * - replyCommentSeq: 새로 달린 대댓글 seq
-     * - parentCommentSeq: 내가 쓴 부모 댓글 seq
-     * - fromMemberId: 대댓글 단 사람 id
-     * - fromNickname: 대댓글 단 사람 닉네임
      */
     public void notifyReplyOnComment(long boardSeq,
                                      long parentCommentSeq,
@@ -150,6 +153,6 @@ public class NotificationService {
         noti.setComment_seq(replyCommentSeq); // 새로 달린 대댓글 번호
         noti.setMessage(fromNickname + "님이 회원님의 댓글에 답글을 남겼습니다.");
 
-        notificationDAO.insert(noti);
+        createNotification(noti);
     }
 }

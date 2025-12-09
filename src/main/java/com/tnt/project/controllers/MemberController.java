@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,13 +14,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.tnt.project.dto.MemberDTO;
-import com.tnt.project.services.MemberService;
 import com.tnt.project.services.FileService;
+import com.tnt.project.services.MemberService;
 
 @RestController
 @RequestMapping("/member")
@@ -37,7 +39,70 @@ public class MemberController {
         memberService.signup(member);
         return "{\"message\":\"회원가입 성공\"}";
     }
+    
+    
 
+    // 아이디 중복 검사
+    @PostMapping("/check-id")
+    public ResponseEntity<?> checkId(@RequestBody Map<String, String> body) {
+        String id = body.get("id");
+        if (id == null || id.isBlank()) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("available", false, "message", "아이디가 비었습니다."));
+        }
+
+        boolean exists = memberService.checkId(id);
+        System.out.println("아이디췍");
+        return ResponseEntity.ok(
+                Map.of("available", !exists)
+        );
+    }
+    // 닉네임 중복 검사
+
+    @PostMapping("/check-nickname")
+    public ResponseEntity<?> checkNickname(@RequestBody Map<String, String> body) {
+        String nickname = body.get("nickname");
+        if (nickname == null || nickname.isBlank()) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("available", false, "message", "닉네임이 비었습니다."));
+        }
+
+        boolean exists = memberService.checkNickname(nickname);
+        System.out.println("닉네임췍");
+        return ResponseEntity.ok(
+                Map.of("available", !exists)
+        );
+    }
+    
+    @GetMapping("/find-id")
+    public ResponseEntity<Map<String, Object>> findIdByEmail(@RequestParam String email) {
+        String id = memberService.findIdByEmail(email);
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("id", id); // 찾으면 아이디, 없으면 null
+
+        return ResponseEntity.ok(body);
+    }
+    
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> req) {
+        String email = req.get("email");
+        String newPassword = req.get("newPassword");
+
+        if (email == null || newPassword == null) {
+            return ResponseEntity.badRequest().body(Map.of("message", "이메일 또는 비밀번호가 누락되었습니다."));
+        }
+
+        boolean ok = memberService.updatePassword(email, newPassword);
+
+        if (ok) {
+            return ResponseEntity.ok(Map.of("message", "비밀번호 변경 완료"));
+        } else {
+            return ResponseEntity.status(HttpStatus.SC_NOT_FOUND)
+                    .body(Map.of("message", "해당 이메일로 가입된 계정을 찾을 수 없습니다."));
+        }
+    }
+    
     // 마이페이지 - 내 정보 조회
     @GetMapping("/mypage/{id}")
     public MemberDTO getMyPage(@PathVariable("id") String id) {

@@ -143,13 +143,19 @@ public class BoardController {
     @PostMapping("/like/{seq}")
     public ResponseEntity<?> like(
             @PathVariable("seq") int seq,
-            @RequestParam("memberId") String memberId
+            @RequestParam("memberId") String memberId,
+            @RequestParam("memberNickname") String memberNickname  // ★ 추가
     ) {
         if (memberId == null || memberId.isBlank()) {
             return ResponseEntity.badRequest().body("memberId가 필요합니다.");
         }
 
-        boardService.reactLike(seq, memberId);
+        // 닉네임이 비어있으면 나중에 필요 시 막아도 됨
+        if (memberNickname == null || memberNickname.isBlank()) {
+            memberNickname = "알 수 없음";
+        }
+
+        boardService.reactLike(seq, memberId, memberNickname); // ★ 변경
         return ResponseEntity.ok("OK");
     }
 

@@ -30,6 +30,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                         "http://10.5.5.12:3000",
                         "http://10.5.5.19:3000",
                         "http://10.5.5.20:3000",
+                        "http://10.10.55.97:3000",
                         "http://192.168.119.210:3000",
                         "http://192.168.219.108:3000"
                 );

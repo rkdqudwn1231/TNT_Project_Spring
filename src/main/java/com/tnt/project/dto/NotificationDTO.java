@@ -9,7 +9,7 @@ public class NotificationDTO {
     private String member_id;     // 알림 받는 회원 ID (member.id)
     private String type;          // "LIKE", "COMMENT", "REPLY" 등
 
-    private Long board_seq;       // 관련 게시글 seq (board.seq)
+    private Long board_seq;       // 관련 게시글 seq (board.seq) 
     private Long comment_seq;     // 관련 댓글 seq (board_comment.seq, 없을 수도 있음)
 
     private String message;       // 사람이 읽을 알림 메시지

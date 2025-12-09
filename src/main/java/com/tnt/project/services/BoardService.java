@@ -20,6 +20,9 @@ public class BoardService {
     @Autowired
     private BoardReactionDAO boardReactionDAO;
 
+    @Autowired
+    private NotificationService notificationService;
+    
     // 게시글 저장
     public int insert(BoardDTO dto) {
         return boardDAO.insert(dto);
@@ -68,12 +71,10 @@ public class BoardService {
      *                                   dislike_count -1, like_count +1
      */
     @Transactional
-    public void reactLike(int boardSeq, String memberId) {
+    public void reactLike(int boardSeq, String memberId, String memberNickname) {
 
         BoardReactionDTO existing =
                 boardReactionDAO.findByBoardAndMember(boardSeq, memberId);
-
-     
 
         if (existing == null) {
             // 1) 아무 반응 없음 → LIKE 추가
@@ -84,24 +85,36 @@ public class BoardService {
             boardReactionDAO.insert(dto);
 
             boardDAO.increaseLike(boardSeq);
-      
+
+            //  좋아요 알림
+            notificationService.notifyLikeOnBoard(
+                    boardSeq,
+                    memberId,
+                    memberNickname
+            );
 
         } else if ("LIKE".equals(existing.getReaction())) {
             // 2) 이미 LIKE → 취소
             boardReactionDAO.delete(boardSeq, memberId);
             boardDAO.decreaseLike(boardSeq);
-           
+            // 취소는 알림 X
 
         } else if ("DISLIKE".equals(existing.getReaction())) {
             // 3) DISLIKE → LIKE 로 변경
             boardReactionDAO.updateReaction(boardSeq, memberId, "LIKE");
             boardDAO.decreaseDislike(boardSeq);
             boardDAO.increaseLike(boardSeq);
-          
+
+            // ★ DISLIKE → LIKE 로 바뀐 경우도 알림 보내줄 수 있음
+            notificationService.notifyLikeOnBoard(
+                    boardSeq,
+                    memberId,
+                    memberNickname
+            );
+
         } else {
             // 혹시 다른 값이 들어있을 경우 방어 코드
             boardReactionDAO.updateReaction(boardSeq, memberId, "LIKE");
-         
         }
     }
 
