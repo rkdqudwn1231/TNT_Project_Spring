@@ -55,13 +55,11 @@ public class ChatbotController {
 		String loginId="";   
 		// 로그인 사용자 아이디(JWT에서 복원된 username)
 		if(authentication != null) {
-			System.out.println("여기까지옴");
 			loginId = authentication.getName();   
 			return ResponseEntity.ok("true");
 		}
 		else
 		{
-			System.out.println("여기까지옴1");
 			return ResponseEntity.status(401)
 			        .body(Map.of("error", "false"));
 		}
