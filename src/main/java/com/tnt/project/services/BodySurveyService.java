@@ -51,8 +51,11 @@ public class BodySurveyService {
         if (res == null) {
             res = new HashMap<>();
         }
-        res.put("body_type", body_type);
-
+        res.put("BODY_TYPE", body_type);
+        res.put("GENDER", bodySurveyDTO.getGender());
+        
+        System.out.println("여기까지온다.");
+        System.out.println(res.get("gender"));
         return res;
     }
 }

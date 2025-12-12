@@ -27,12 +27,14 @@ public class MemberDTO {
     private LocalDateTime createdAt;        // 생성일
     private LocalDateTime updatedAt;        // 수정일
 
+    private String black;			//blackList
+    
     // 기본 생성자
     public MemberDTO() {}
 
 	public MemberDTO(String id, String password, String nickname, String name, String gender, LocalDate birth,
 			String phone, String email, String image_uuid, String image_original, String image_url,
-			String personal_color, String body_shape, LocalDateTime createdAt, LocalDateTime updatedAt) {
+			String personal_color, String body_shape, LocalDateTime createdAt, LocalDateTime updatedAt, String black) {
 		super();
 		this.id = id;
 		this.password = password;
@@ -49,6 +51,7 @@ public class MemberDTO {
 		this.body_shape = body_shape;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
+		this.black = black;
 	}
 
 	public String getId() {
@@ -171,6 +174,15 @@ public class MemberDTO {
 		this.updatedAt = updatedAt;
 	}
 
+	public String getBlack() {
+		return black;
+	}
+
+	public void setBlack(String black) {
+		this.black = black;
+	}
+
+	
     
     
 }

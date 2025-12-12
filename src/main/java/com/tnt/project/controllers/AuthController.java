@@ -42,7 +42,7 @@ public class AuthController {
 
     @PostMapping("/send-verify-link")
     public ResponseEntity<?> sendVerifyLink(@RequestBody Map<String, String> body) {
-
+    	
         String email = body.get("email");
         if (email == null || email.isBlank()) {
             return ResponseEntity
@@ -338,7 +338,18 @@ public class AuthController {
         try {
             // 로그인 검증 + 회원 정보 획득
             MemberDTO member = authService.login(id, pw);
-
+            
+            
+            
+            if(member.getBlack().equals("true")) {
+            	System.out.println("테스트");
+            	 return ResponseEntity
+                         .status(HttpStatus.UNAUTHORIZED)
+                         .body(Map.of("error","블랙유저"));
+            }
+            
+            System.out.println("블랙 체크:"+ member.getBlack());
+            
             // 권한 생성
             List<String> roles = new ArrayList<>();
             if ("admin".equals(member.getId())) {
@@ -346,7 +357,7 @@ public class AuthController {
             } else {
                 roles.add("MEMBER");
             }
-
+            
             // JWT 생성 (id 기준)
             String token = jwt.createToken(member.getId(), roles);
 

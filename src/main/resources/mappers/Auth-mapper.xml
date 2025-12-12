@@ -24,7 +24,8 @@
             personal_color,
             body_shape,
             created_at,
-            updated_at
+            updated_at,
+            black
         FROM member
         WHERE id = #{id}
     </select>

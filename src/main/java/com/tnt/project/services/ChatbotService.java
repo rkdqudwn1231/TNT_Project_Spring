@@ -33,7 +33,7 @@ public class ChatbotService {
 
 	// ★ Gemini API 정보
 	private final String URL =
-			"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=";
+			"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=";
 
 
 	// 전문가 프롬프트 (히스토리 prefix로 계속 삽입)
@@ -101,7 +101,7 @@ public class ChatbotService {
 
 		//프론트에서 히스토리 받아오는 방법.
 		for (Map<String, String> h : history) {
-			String role = h.get("sender").equals("user") ? "user" : "assistant";
+			String role = h.get("sender").equals("user") ? "user" : "model";
 			String msg = h.get("text");
 			System.out.println(msg);
 			contents.add(Map.of(
