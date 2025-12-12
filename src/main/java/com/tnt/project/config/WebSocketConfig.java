@@ -24,16 +24,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         // 리액트에서 연결할 엔드포인트 (SockJS 제거)
         registry.addEndpoint("/ws-stomp")
                 // 개발용 허용 origin (필요한 IP만 넣기)
-                .setAllowedOriginPatterns(
-                        "http://localhost:3000",
-                        "http://10.5.5.11:3000",
-                        "http://10.5.5.12:3000",
-                        "http://10.5.5.19:3000",
-                        "http://10.5.5.20:3000",
-                        "http://10.10.55.97:3000",
-                        "http://192.168.119.210:3000",
-                        "http://192.168.219.108:3000"
-                );
+                .setAllowedOriginPatterns("*");
               
     }
 }

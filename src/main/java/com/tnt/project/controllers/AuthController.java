@@ -314,7 +314,7 @@ public class AuthController {
 
     @GetMapping("/email-verified")
     public ResponseEntity<?> isEmailVerified(@RequestParam("email") String email) {
-
+    	System.out.println("이메일옴");
         if (email == null || email.isBlank()) {
             return ResponseEntity
                     .badRequest()

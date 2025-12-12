@@ -304,7 +304,7 @@ public class FitRoomService {
 //				modelDTO.setMemberId(memberId);
 //				modelDTO.setSex(modelSex);
 //				mdao.insertModel(modelDTO);
-//			}
+//			}s
 			if (modelImage != null) {
 			    ModelDTO modelDTO = new ModelDTO();
 			    modelDTO.setModelUrl(modelUrl);
